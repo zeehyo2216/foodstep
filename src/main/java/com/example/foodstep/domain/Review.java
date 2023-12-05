@@ -5,8 +5,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.OffsetDateTime;
 
 @Entity
 @Getter
@@ -28,24 +31,26 @@ public class Review {
     @NotNull
     private Float rate;
 
-    @NotNull
     private String recommend;
-
-    //@NotNull
-    @ColumnDefault("0")
-    private Integer likes;
 
     @Column(columnDefinition = "TEXT")
     private String contents;
 
+    @Column(updatable = false)
+    @CreationTimestamp
+    private OffsetDateTime dateInit;
+
+    @UpdateTimestamp
+    private OffsetDateTime dateMod;
+
     @Builder
-    public Review(Integer userId, Integer placeId, Float rate, String recommend, Integer likes, String contents) {
+    public Review(Integer userId, Integer placeId, Float rate, String recommend, String contents, OffsetDateTime dateMod) {
         this.userId = userId;
         this.placeId = placeId;
         this.rate = rate;
         this.recommend = recommend;
-        this.likes = likes;
         this.contents = contents;
+        this.dateMod = dateMod;
     }
 }
 

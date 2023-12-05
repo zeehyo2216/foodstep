@@ -4,6 +4,8 @@ import com.example.foodstep.domain.Review;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.OffsetDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -18,16 +20,17 @@ public class ReviewDto {
 
     private String recommend;
 
-    private Integer likes;
-
     private String contents;
+
+    private OffsetDateTime dateInit;
+
+    private OffsetDateTime dateMod;
 
     public Review toEntity() {
         return Review.builder().userId(userId)
                 .placeId(placeId)
                 .rate(rate)
                 .recommend(recommend)
-                .likes(likes)
                 .contents(contents)
                 .build();
     }
@@ -38,8 +41,9 @@ public class ReviewDto {
         this.placeId = review.getPlaceId();
         this.rate = review.getRate();
         this.recommend = review.getRecommend();
-        this.likes = review.getLikes();
         this.contents = review.getContents();
+        this.dateInit = review.getDateInit();
+        this.dateMod = review.getDateMod();
     }
 
 

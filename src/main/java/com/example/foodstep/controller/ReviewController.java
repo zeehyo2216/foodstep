@@ -32,7 +32,7 @@ public class ReviewController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editReview(@RequestBody ReviewDto reviewDto) {
+    public ResponseEntity<String> editReview(@RequestBody ReviewDto reviewDto) throws Exception {
         reviewService.editReview(reviewDto);
         return new ResponseEntity<>("Editing Review : Success", HttpStatus.OK);
     }

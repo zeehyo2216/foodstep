@@ -36,7 +36,8 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void editReview(ReviewDto reviewDto) {
+    public void editReview(ReviewDto reviewDto) throws Exception{
+        Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow();
 
     }
 }
