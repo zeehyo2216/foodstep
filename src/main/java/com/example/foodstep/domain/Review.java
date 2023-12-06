@@ -1,24 +1,18 @@
 package com.example.foodstep.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.OffsetDateTime;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor
-@DynamicInsert
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+@SuperBuilder
+public class Review extends BaseEntity{
 
     //@Column(name = "user_id")
     @NotNull
@@ -36,21 +30,20 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     private String contents;
 
-    @Column(updatable = false)
-    @CreationTimestamp
-    private OffsetDateTime dateInit;
-
-    @UpdateTimestamp
-    private OffsetDateTime dateMod;
-
     @Builder
-    public Review(Integer userId, Integer placeId, Float rate, String recommend, String contents, OffsetDateTime dateMod) {
+    public Review(Integer userId, Integer placeId, Float rate, String recommend, String contents) {
         this.userId = userId;
         this.placeId = placeId;
         this.rate = rate;
         this.recommend = recommend;
         this.contents = contents;
-        this.dateMod = dateMod;
+    }
+
+
+    public void updateReview(Float rate, String recommend, String contents){
+        this.rate = rate;
+        this.recommend = recommend;
+        this.contents = contents;
     }
 }
 

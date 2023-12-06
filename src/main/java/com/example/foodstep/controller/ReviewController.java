@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,12 +33,10 @@ public class ReviewController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editReview(@RequestBody ReviewDto reviewDto) throws Exception {
+    public ResponseEntity<String> editReview(@RequestBody ReviewDto reviewDto) throws NoSuchElementException {
         reviewService.editReview(reviewDto);
         return new ResponseEntity<>("Editing Review : Success", HttpStatus.OK);
     }
-
-
 
 
 

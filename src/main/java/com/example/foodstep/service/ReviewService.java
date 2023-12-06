@@ -5,9 +5,11 @@ import com.example.foodstep.dto.ReviewDto;
 import com.example.foodstep.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
@@ -36,8 +38,10 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void editReview(ReviewDto reviewDto) throws Exception{
+    @Transactional
+    public void editReview(ReviewDto reviewDto) throws NoSuchElementException {
         Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow();
+        review.updateReview(reviewDto.getRate(), reviewDto.getRecommend(), reviewDto.getContents());
 
     }
 }
