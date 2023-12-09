@@ -22,7 +22,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.findAllReviews(), HttpStatus.OK);
     }
     @GetMapping("/detail/{id}")
-    public ResponseEntity<ReviewDto> findReview(@PathVariable(name = "id") int id) {
+    public ResponseEntity<ReviewDto> findReviewDetail(@PathVariable(name = "id") int id) throws NoSuchElementException {
         return new ResponseEntity<>(reviewService.findReviewDetail(id), HttpStatus.OK);
     }
 

@@ -1,6 +1,8 @@
 package com.example.foodstep.dto;
 
+import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +14,9 @@ import java.time.OffsetDateTime;
 public class ReviewDto {
     private Integer id;
 
-    private Integer userId;
+    private User user;
 
-    private Integer placeId;
+    private Place place;
 
     private Float rate;
 
@@ -27,8 +29,8 @@ public class ReviewDto {
     private OffsetDateTime dateMod;
 
     public Review toEntity() {
-        return Review.builder().userId(userId)
-                .placeId(placeId)
+        return Review.builder().user(user)
+                .place(place)
                 .rate(rate)
                 .recommend(recommend)
                 .contents(contents)
@@ -37,8 +39,8 @@ public class ReviewDto {
 
     public ReviewDto(Review review){
         this.id = review.getId();
-        this.userId = review.getUserId();
-        this.placeId = review.getPlaceId();
+        this.user = review.getUser();
+        this.place = review.getPlace();
         this.rate = review.getRate();
         this.recommend = review.getRecommend();
         this.contents = review.getContents();

@@ -27,11 +27,10 @@ public class ReviewService {
         return reviewDtoList;
     }
 
-    public ReviewDto findReviewDetail(int id) {
-        Review review = reviewRepository.findById(id).orElseGet(Review::new);
+    public ReviewDto findReviewDetail(int id) throws NoSuchElementException {
+        Review review = reviewRepository.findById(id).orElseThrow();
         ReviewDto reviewDto = new ReviewDto(review);
         return reviewDto;
-
     }
     public void addReview(ReviewDto reviewDto) {
         Review review = reviewDto.toEntity();
@@ -42,6 +41,5 @@ public class ReviewService {
     public void editReview(ReviewDto reviewDto) throws NoSuchElementException {
         Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow();
         review.updateReview(reviewDto.getRate(), reviewDto.getRecommend(), reviewDto.getContents());
-
     }
 }
