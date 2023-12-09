@@ -12,7 +12,7 @@ public class PlaceService {
     private final PlaceRepository placeRepository;
 
     public PlaceDto findPlaceDetail(int id) {
-        Place place = placeRepository.findById(id).orElseGet(Place::new);
+        Place place = placeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
         PlaceDto placeDto = new PlaceDto(place);
         return placeDto;
     }
