@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class EmailRegisterRequest {
+public class EmailRegisterRequestDto {
 
     @NotBlank(message = "이메일은 필수입니다.")
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
@@ -21,5 +21,7 @@ public class EmailRegisterRequest {
     private String password;
     @NotBlank(message = "닉네임은 필수입니다.") // 없을 시 랜덤으로 지정.
     private String nickname;
+
+
 
 }
