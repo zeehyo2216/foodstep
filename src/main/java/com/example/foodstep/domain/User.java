@@ -1,7 +1,10 @@
 package com.example.foodstep.domain;
 
+import com.example.foodstep.enums.Authority;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -22,6 +25,11 @@ public class User extends BaseEntity {
     private String password;
     @NotNull
     private String nickname;
+
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
+    //private String uuid;
 
     //private String name;
 

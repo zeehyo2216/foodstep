@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: foodstep_user
+    url: jdbc:mysql://15.164.191.125:3306/foodstep_dev?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    show-sql: 'true'
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+jwt:
+#  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+#  token-validity-in-seconds: 86400
