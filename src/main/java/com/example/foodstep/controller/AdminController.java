@@ -1,6 +1,6 @@
 package com.example.foodstep.controller;
 
-import com.example.foodstep.dto.EmailRegisterRequestDto;
+import com.example.foodstep.dto.user.EmailRegisterRequestDto;
 import com.example.foodstep.enums.Authority;
 import com.example.foodstep.service.UserService;
 import lombok.RequiredArgsConstructor;

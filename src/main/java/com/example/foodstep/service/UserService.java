@@ -2,11 +2,11 @@ package com.example.foodstep.service;
 
 import com.example.foodstep.component.JwtTokenProvider;
 import com.example.foodstep.domain.User;
-import com.example.foodstep.dto.EmailRegisterRequestDto;
-import com.example.foodstep.dto.EmailUserRequestDto;
 import com.example.foodstep.dto.JwtTokenDto;
+import com.example.foodstep.dto.user.*;
 import com.example.foodstep.enums.Authority;
 import com.example.foodstep.repository.UserRepository;
+import com.example.foodstep.util.VerificationCodeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,12 +27,52 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
+    private final MailService mailService;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
+    private static final long VERIFICATION_CODE_EXPIRE_TIME = 1000 * 60 * 5;
+    private static final String VERIFICATION_CODE_PREFIX = "VerificationCode ";
 
-    public void register(EmailRegisterRequestDto emailRegisterRequestDto, Authority authority) {
-        if ( userRepository.existsByEmail(emailRegisterRequestDto.getEmail()) ) {
+    @Transactional
+    public void sendVerificationCode(EmailVerifyRequestDto emailVerifyRequestDto) {
+
+        String requestEmail = emailVerifyRequestDto.getEmail();
+
+        if ( userRepository.existsByEmail(requestEmail) ) {
             throw new RuntimeException("이미 가입한 사용자입니다.");
         }
+
+        String title = "[Foodstep] 가입 인증 코드";
+        String verificationCode = VerificationCodeUtil.createVerificationCode();
+
+        //인증메일 보내기
+        mailService.sendEmail(requestEmail, title, verificationCode);
+
+        redisTemplate.opsForValue().set(
+                VERIFICATION_CODE_PREFIX + requestEmail,
+                verificationCode,
+                VERIFICATION_CODE_EXPIRE_TIME,
+                TimeUnit.MILLISECONDS
+        );
+
+    }
+
+    @Transactional
+    public void verifyEmail(VerificationCodeRequestDto verificationCodeRequestDto) {
+        String redisCode = redisTemplate
+                                .opsForValue()
+                                .get(VERIFICATION_CODE_PREFIX + verificationCodeRequestDto.getEmail());
+
+        if (redisCode == null) {
+            throw new RuntimeException("인증이 만료되었습니다. 다시 시도해주세요.");
+        } else if (!redisCode.equals(verificationCodeRequestDto.getVerificationCode())) {
+            throw new RuntimeException("인증 코드 잘못 입력하였습니다.");
+        }
+        // return Objects.equals(redisCode, verificationCodeRequestDto.getVerificationCode());
+
+    }
+
+    @Transactional
+    public void register(EmailRegisterRequestDto emailRegisterRequestDto, Authority authority) {
         userRepository.save(User.builder()
                 .email(emailRegisterRequestDto.getEmail())
                 .password(bCryptPasswordEncoder.encode(emailRegisterRequestDto.getPassword()))
@@ -61,6 +101,12 @@ public class UserService {
                 TimeUnit.MILLISECONDS
         );
         return jwtTokenDto;
+    }
+
+    @Transactional
+    public void logout(User user) {
+
+
     }
 
     @Transactional

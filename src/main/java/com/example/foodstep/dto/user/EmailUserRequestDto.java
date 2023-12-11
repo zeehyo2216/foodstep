@@ -1,4 +1,4 @@
-package com.example.foodstep.dto;
+package com.example.foodstep.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

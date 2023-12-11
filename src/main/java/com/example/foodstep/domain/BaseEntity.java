@@ -21,10 +21,11 @@ public abstract class BaseEntity {
     private Integer id;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(columnDefinition = "DATETIME(0)", updatable = false)
     private OffsetDateTime dateInit;
 
     @LastModifiedDate
+    @Column(columnDefinition = "DATETIME(0)")
     private OffsetDateTime dateMod;
 
 }
