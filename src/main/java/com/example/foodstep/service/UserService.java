@@ -32,6 +32,9 @@ public class UserService {
     private static final long VERIFICATION_CODE_EXPIRE_TIME = 1000 * 60 * 5;
     private static final String VERIFICATION_CODE_PREFIX = "VerificationCode ";
 
+    private static final long IS_VERIFIED_EXPIRE_TIME = 1000 * 60 * 60 * 12;
+    private static final String IS_VERIFIED_PREFIX = "IsVerified ";
+
     @Transactional
     public void sendVerificationCode(EmailVerifyRequestDto emailVerifyRequestDto) {
 
@@ -42,10 +45,11 @@ public class UserService {
         }
 
         String title = "[Foodstep] 가입 인증 코드";
+        String prefix = "인증코드 : ";
         String verificationCode = VerificationCodeUtil.createVerificationCode();
 
         //인증메일 보내기
-        mailService.sendEmail(requestEmail, title, verificationCode);
+        mailService.sendEmail(requestEmail, title, prefix + verificationCode);
 
         redisTemplate.opsForValue().set(
                 VERIFICATION_CODE_PREFIX + requestEmail,
@@ -59,26 +63,41 @@ public class UserService {
     @Transactional
     public void verifyEmail(VerificationCodeRequestDto verificationCodeRequestDto) {
         String redisCode = redisTemplate
-                                .opsForValue()
-                                .get(VERIFICATION_CODE_PREFIX + verificationCodeRequestDto.getEmail());
+                .opsForValue()
+                .get(VERIFICATION_CODE_PREFIX + verificationCodeRequestDto.getEmail());
 
         if (redisCode == null) {
             throw new RuntimeException("인증이 만료되었습니다. 다시 시도해주세요.");
         } else if (!redisCode.equals(verificationCodeRequestDto.getVerificationCode())) {
             throw new RuntimeException("인증 코드 잘못 입력하였습니다.");
+        } else {
+            //인증 유무 Redis Cache
+            redisTemplate.opsForValue().set(
+                    IS_VERIFIED_PREFIX + verificationCodeRequestDto.getEmail(),
+                    "1",
+                    IS_VERIFIED_EXPIRE_TIME,
+                    TimeUnit.MILLISECONDS
+            );
         }
-        // return Objects.equals(redisCode, verificationCodeRequestDto.getVerificationCode());
 
     }
 
     @Transactional
     public void register(EmailRegisterRequestDto emailRegisterRequestDto, Authority authority) {
-        userRepository.save(User.builder()
-                .email(emailRegisterRequestDto.getEmail())
-                .password(bCryptPasswordEncoder.encode(emailRegisterRequestDto.getPassword()))
-                .nickname(emailRegisterRequestDto.getNickname())
-                .authority(authority)
-                .build());
+        String redisCode = redisTemplate
+                .opsForValue()
+                .get(IS_VERIFIED_PREFIX + emailRegisterRequestDto.getEmail());
+
+        if (redisCode == null) {
+            throw new RuntimeException("인증이 만료되었습니다. 처음부터 다시 시도해주세요.");
+        } else {
+            userRepository.save(User.builder()
+                    .email(emailRegisterRequestDto.getEmail())
+                    .password(bCryptPasswordEncoder.encode(emailRegisterRequestDto.getPassword()))
+                    .nickname(emailRegisterRequestDto.getNickname())
+                    .authority(authority)
+                    .build());
+        }
     }
 
     @Transactional
