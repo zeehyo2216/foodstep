@@ -1,10 +1,13 @@
 package com.example.foodstep.service;
 
+import com.example.foodstep.model.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.foodstep.enums.ErrorCode.CANNOT_SEND_VERIFICATION_MAIL;
 
 @Service
 @Transactional
@@ -20,7 +23,7 @@ public class MailService {
         try {
             emailSender.send(emailForm);
         } catch (RuntimeException e) {
-            throw new RuntimeException("인증메일 전송 실패");
+            throw new CustomException(CANNOT_SEND_VERIFICATION_MAIL);
         }
     }
 
