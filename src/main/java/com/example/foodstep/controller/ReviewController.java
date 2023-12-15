@@ -1,7 +1,10 @@
 package com.example.foodstep.controller;
 
 
+import com.example.foodstep.config.RequestUser;
+import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.ReviewDto;
+import com.example.foodstep.dto.ReviewRequestDto;
 import com.example.foodstep.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,8 +30,8 @@ public class ReviewController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addReview(@RequestBody ReviewDto reviewDto) {
-        reviewService.addReview(reviewDto);
+    public ResponseEntity<String> addReview(@RequestBody ReviewRequestDto reviewRequestDto, @RequestUser User user) {
+        reviewService.addReview(reviewRequestDto, user);
         return new ResponseEntity<>("Adding Review : Success", HttpStatus.OK);
     }
 

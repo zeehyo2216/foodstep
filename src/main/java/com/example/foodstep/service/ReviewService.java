@@ -1,7 +1,12 @@
 package com.example.foodstep.service;
 
+import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.ReviewDto;
+import com.example.foodstep.dto.ReviewRequestDto;
+import com.example.foodstep.model.CustomException;
+import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.example.foodstep.enums.ErrorCode.PLACE_NOT_FOUND;
+
 @RequiredArgsConstructor
 @Service
 public class ReviewService {
     private final ReviewRepository reviewRepository;
+    private final PlaceRepository placeRepository;
 
     public List<ReviewDto> findAllReviews() {
         List<ReviewDto> reviewDtoList = new ArrayList<>();
@@ -32,7 +40,15 @@ public class ReviewService {
         ReviewDto reviewDto = new ReviewDto(review);
         return reviewDto;
     }
-    public void addReview(ReviewDto reviewDto) {
+
+    @Transactional
+    public void addReview(ReviewRequestDto reviewRequestDto, User user) {
+        ReviewDto reviewDto = new ReviewDto(reviewRequestDto);
+        reviewDto.setUser(user);
+
+        Place place = placeRepository.findById(reviewRequestDto.getPlaceId()).orElseThrow(() -> new CustomException(PLACE_NOT_FOUND));
+        reviewDto.setPlace(place);
+
         Review review = reviewDto.toEntity();
         reviewRepository.save(review);
     }

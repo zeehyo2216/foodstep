@@ -17,6 +17,7 @@ public enum ErrorCode {
     CANNOT_SEND_VERIFICATION_MAIL(BAD_REQUEST, "인증 메일 전송에 실패하였습니다"),
     USER_EXISTS(BAD_REQUEST, "이미 가입한 사용자입니다"),
     WRONG_VERIFICATION_CODE(BAD_REQUEST, "인증 코드 잘못 입력하였습니다"),
+    PLACE_EXISTS(BAD_REQUEST, "이미 등록된 음식점입니다"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
@@ -26,7 +27,8 @@ public enum ErrorCode {
     // 404 NOT_FOUND : Resource 를 찾을 수 없음
     MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
-    VERIFICATION_CODE_EXPIRED(NOT_FOUND, "인증이 만료되었습니다. 처음부터 다시 시도해주세요.")
+    VERIFICATION_CODE_EXPIRED(NOT_FOUND, "인증이 만료되었습니다. 처음부터 다시 시도해주세요."),
+    PLACE_NOT_FOUND(NOT_FOUND, "해당 음식점을 찾을 수 없습니다")
 
 
     // 504

@@ -48,5 +48,11 @@ public class ReviewDto {
         this.dateMod = review.getDateMod();
     }
 
+    public ReviewDto(ReviewRequestDto reviewRequestDto) {
+        this.rate = reviewRequestDto.getRate();
+        this.recommend = reviewRequestDto.getRecommend();
+        this.contents = reviewRequestDto.getContents();
+    }
+
 
 }

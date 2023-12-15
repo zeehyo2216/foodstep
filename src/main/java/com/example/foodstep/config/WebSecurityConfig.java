@@ -6,6 +6,7 @@ import com.example.foodstep.component.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
+    private final RedisTemplate<String, String> redisTemplate;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     @Bean
@@ -64,7 +66,7 @@ public class WebSecurityConfig {
                             cors.configurationSource(source);
                         }
                 )
-                .apply(new JwtSecurityConfig(jwtTokenProvider))
+                .apply(new JwtSecurityConfig(jwtTokenProvider, redisTemplate))
         ;
         return httpSecurity.build();
     }

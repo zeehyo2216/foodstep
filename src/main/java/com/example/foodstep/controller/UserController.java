@@ -43,7 +43,7 @@ public class UserController {
         return new ResponseEntity<>(userService.login(emailUserRequestDto), HttpStatus.OK);
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestBody JwtTokenDto jwtTokenDto, @RequestUser User user) {
         userService.logout(jwtTokenDto, user);
         return new ResponseEntity<>("Logout Success.", HttpStatus.OK);

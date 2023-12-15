@@ -4,4 +4,5 @@ import com.example.foodstep.domain.Place;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PlaceRepository extends JpaRepository<Place, Integer> {
+    boolean existsByNameAndAddress(String name, String address);
 }
