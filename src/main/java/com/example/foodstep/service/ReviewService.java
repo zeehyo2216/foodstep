@@ -3,8 +3,8 @@ package com.example.foodstep.service;
 import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.User;
-import com.example.foodstep.dto.ReviewDto;
-import com.example.foodstep.dto.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewDto;
+import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import static com.example.foodstep.enums.ErrorCode.PLACE_NOT_FOUND;
+import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -35,8 +35,8 @@ public class ReviewService {
         return reviewDtoList;
     }
 
-    public ReviewDto findReviewDetail(int id) throws NoSuchElementException {
-        Review review = reviewRepository.findById(id).orElseThrow();
+    public ReviewDto findReviewDetail(int id){
+        Review review = reviewRepository.findById(id).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
         ReviewDto reviewDto = new ReviewDto(review);
         return reviewDto;
     }
@@ -54,8 +54,8 @@ public class ReviewService {
     }
 
     @Transactional
-    public void editReview(ReviewDto reviewDto) throws NoSuchElementException {
-        Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow();
+    public void editReview(ReviewDto reviewDto){
+        Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
         review.updateReview(reviewDto.getRate(), reviewDto.getRecommend(), reviewDto.getContents());
     }
 }

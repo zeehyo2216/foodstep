@@ -1,4 +1,4 @@
-package com.example.foodstep.dto;
+package com.example.foodstep.dto.review;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

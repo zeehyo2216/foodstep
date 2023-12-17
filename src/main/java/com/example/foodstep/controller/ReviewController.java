@@ -3,8 +3,8 @@ package com.example.foodstep.controller;
 
 import com.example.foodstep.config.RequestUser;
 import com.example.foodstep.domain.User;
-import com.example.foodstep.dto.ReviewDto;
-import com.example.foodstep.dto.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewDto;
+import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

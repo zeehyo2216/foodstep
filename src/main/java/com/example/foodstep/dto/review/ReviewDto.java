@@ -1,4 +1,4 @@
-package com.example.foodstep.dto;
+package com.example.foodstep.dto.review;
 
 import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
