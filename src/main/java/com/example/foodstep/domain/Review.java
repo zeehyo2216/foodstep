@@ -9,12 +9,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
 public class Review extends BaseEntity{
 
     //@Column(name = "user_id")
@@ -30,24 +28,24 @@ public class Review extends BaseEntity{
     @NotNull
     private Float rate;
 
-    private String recommend;
+    private String keyword;
 
     @Column(columnDefinition = "TEXT")
     private String contents;
 
     @Builder
-    public Review(User user, Place place, Float rate, String recommend, String contents) {
+    public Review(User user, Place place, Float rate, String keyword, String contents) {
         this.user = user;
         this.place = place;
         this.rate = rate;
-        this.recommend = recommend;
+        this.keyword = keyword;
         this.contents = contents;
     }
 
 
-    public void updateReview(Float rate, String recommend, String contents){
+    public void updateReview(Float rate, String keyword, String contents){
         this.rate = rate;
-        this.recommend = recommend;
+        this.keyword = keyword;
         this.contents = contents;
     }
 }

@@ -7,6 +7,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Category {
-    KR_FOOD("한식");
+    KR_FOOD("한식"),
+    CN_FOOD("중식")
+    ;
+
     private final String name;
+
+    public String getImageUrl() {
+        return name().toLowerCase();
+    }
 }

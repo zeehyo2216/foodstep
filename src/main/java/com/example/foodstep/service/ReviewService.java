@@ -56,6 +56,6 @@ public class ReviewService {
     @Transactional
     public void editReview(ReviewDto reviewDto){
         Review review = reviewRepository.findById(reviewDto.getId()).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
-        review.updateReview(reviewDto.getRate(), reviewDto.getRecommend(), reviewDto.getContents());
+        review.updateReview(reviewDto.getRate(), reviewDto.getKeyword(), reviewDto.getContents());
     }
 }

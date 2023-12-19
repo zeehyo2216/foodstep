@@ -9,16 +9,16 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Builder
-public class ErrorResponse {
+public class ErrorResponseDto {
     private final OffsetDateTime timestamp = OffsetDateTime.now();
     private final int status;
     private final String code;
     private final String message;
 
-    public static ResponseEntity<ErrorResponse> toResponseEntity(ErrorCode errorCode) {
+    public static ResponseEntity<ErrorResponseDto> toResponseEntity(ErrorCode errorCode) {
         return ResponseEntity
                 .status(errorCode.getHttpStatus())
-                .body(ErrorResponse.builder()
+                .body(ErrorResponseDto.builder()
                         .status(errorCode.getHttpStatus().value())
                         .code(errorCode.name())
                         .message(errorCode.getDetail())

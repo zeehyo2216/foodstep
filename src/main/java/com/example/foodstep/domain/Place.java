@@ -1,17 +1,22 @@
 package com.example.foodstep.domain;
 
+import com.example.foodstep.enums.Category;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
 public class Place extends BaseEntity{
     @NotNull
     private String name;
@@ -22,6 +27,10 @@ public class Place extends BaseEntity{
     private String addressRoad;
 
     private String phone;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private Category category;
 
     @NotNull
     private Double coorX;
@@ -35,13 +44,17 @@ public class Place extends BaseEntity{
 
     private String notification;
 
+    @OneToMany(mappedBy = "place")
+    private List<Review> reviews = new ArrayList<>();
+
 
     @Builder
-    public Place(String name, String address, String addressRoad, String phone, Double coorX, Double coorY) {
+    public Place(String name, String address, String addressRoad, String phone, Category category, Double coorX, Double coorY) {
         this.name = name;
         this.address = address;
         this.addressRoad = addressRoad;
         this.phone = phone;
+        this.category = category;
         this.coorX = coorX;
         this.coorY = coorY;
     }

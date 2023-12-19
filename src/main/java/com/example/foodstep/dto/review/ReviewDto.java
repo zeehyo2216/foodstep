@@ -20,7 +20,7 @@ public class ReviewDto {
 
     private Float rate;
 
-    private String recommend;
+    private String keyword;
 
     private String contents;
 
@@ -32,7 +32,7 @@ public class ReviewDto {
         return Review.builder().user(user)
                 .place(place)
                 .rate(rate)
-                .recommend(recommend)
+                .keyword(keyword)
                 .contents(contents)
                 .build();
     }
@@ -42,7 +42,7 @@ public class ReviewDto {
         this.user = review.getUser();
         this.place = review.getPlace();
         this.rate = review.getRate();
-        this.recommend = review.getRecommend();
+        this.keyword = review.getKeyword();
         this.contents = review.getContents();
         this.dateInit = review.getDateInit();
         this.dateMod = review.getDateMod();
@@ -50,7 +50,7 @@ public class ReviewDto {
 
     public ReviewDto(ReviewRequestDto reviewRequestDto) {
         this.rate = reviewRequestDto.getRate();
-        this.recommend = reviewRequestDto.getRecommend();
+        this.keyword = reviewRequestDto.getKeyword();
         this.contents = reviewRequestDto.getContents();
     }
 

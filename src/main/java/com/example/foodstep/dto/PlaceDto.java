@@ -1,6 +1,7 @@
 package com.example.foodstep.dto;
 
 import com.example.foodstep.domain.Place;
+import com.example.foodstep.enums.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,8 @@ public class PlaceDto {
     private String addressRoad;
 
     private String phone;
+
+    private Category category;
 
     private Double coorX;
 
@@ -39,6 +42,7 @@ public class PlaceDto {
                 .address(address)
                 .addressRoad(addressRoad)
                 .phone(phone)
+                .category(category)
                 .coorX(coorX)
                 .coorY(coorY)
                 .build();
@@ -51,6 +55,7 @@ public class PlaceDto {
         this.address= place.getAddress();
         this.addressRoad = place.getAddressRoad();
         this.phone = place.getPhone();
+        this.category = place.getCategory();
         this.coorX = place.getCoorX();
         this.coorY = place.getCoorY();
         this.rateAvg = place.getRateAvg();

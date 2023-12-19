@@ -11,7 +11,7 @@ public class ReviewRequestDto {
 
     private Float rate;
 
-    private String recommend;
+    private String keyword;
 
     private String contents;
 }

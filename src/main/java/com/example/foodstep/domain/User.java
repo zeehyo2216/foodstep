@@ -1,22 +1,20 @@
 package com.example.foodstep.domain;
 
 import com.example.foodstep.enums.Authority;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SuperBuilder
 public class User extends BaseEntity {
     @NotNull
     @Column(updatable = false, unique = true)
@@ -28,6 +26,9 @@ public class User extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
 
     //private String uuid;
 

@@ -1,5 +1,6 @@
 package com.example.foodstep.dto.review;
 
+import com.example.foodstep.enums.Category;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,7 +14,7 @@ public class ReviewResponseDto {
 
     private Float rate;
 
-    private String recommend;
+    private String keyword;
 
     private String contents;
 
@@ -27,7 +28,7 @@ public class ReviewResponseDto {
     //Place
     private String placeName;
     private String placeAddress;
-    private String category;
+    private Category category;
 
 
 
