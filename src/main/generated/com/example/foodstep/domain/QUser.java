@@ -41,6 +41,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final StringPath phone = createString("phone");
 
+    public final StringPath profileImgUrl = createString("profileImgUrl");
+
     public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
 
     public final StringPath username = createString("username");

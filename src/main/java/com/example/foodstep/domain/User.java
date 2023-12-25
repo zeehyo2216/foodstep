@@ -38,15 +38,18 @@ public class User extends BaseEntity {
 
     private String name;
 
+    private String profileImgUrl;
+
 
     @Builder
-    public User(String username, String password, String email, String phone, String name, Authority authority) {
+    public User(String username, String password, String email, String phone, String name, Authority authority, String profileImgUrl) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.phone = phone;
         this.authority = authority;
         this.name = name;
+        this.profileImgUrl = profileImgUrl;
     }
 
 

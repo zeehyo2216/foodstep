@@ -78,6 +78,10 @@ configurations {
     querydsl.extendsFrom compileClasspath
 }
 
+clean {
+    delete file(querydslSrcDir)
+}
+
 tasks.named('bootBuildImage') {
     builder = 'paketobuildpacks/builder-jammy-base:latest'
 }

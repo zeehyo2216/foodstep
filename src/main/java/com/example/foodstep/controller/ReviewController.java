@@ -5,7 +5,9 @@ import com.example.foodstep.config.RequestUser;
 import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewDto;
 import com.example.foodstep.dto.review.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.service.ReviewService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +27,12 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.findAllReviews(), HttpStatus.OK);
     }
     @GetMapping("/detail/{id}")
-    public ResponseEntity<ReviewDto> findReviewDetail(@PathVariable(name = "id") int id) throws NoSuchElementException {
+    public ResponseEntity<ReviewResponseDto> findReviewDetail(@PathVariable(name = "id") int id) throws NoSuchElementException {
         return new ResponseEntity<>(reviewService.findReviewDetail(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addReview(@RequestBody ReviewRequestDto reviewRequestDto, @RequestUser User user) {
+    public ResponseEntity<String> addReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto, @RequestUser User user) {
         reviewService.addReview(reviewRequestDto, user);
         return new ResponseEntity<>("Adding Review : Success", HttpStatus.OK);
     }

@@ -1,6 +1,6 @@
 package com.example.foodstep.domain;
 
-import com.example.foodstep.enums.Category;
+import com.example.foodstep.enums.PlaceCategory;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -30,7 +30,7 @@ public class Place extends BaseEntity{
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private PlaceCategory placeCategory;
 
     @NotNull
     private Double coorX;
@@ -49,12 +49,12 @@ public class Place extends BaseEntity{
 
 
     @Builder
-    public Place(String name, String address, String addressRoad, String phone, Category category, Double coorX, Double coorY) {
+    public Place(String name, String address, String addressRoad, String phone, PlaceCategory placeCategory, Double coorX, Double coorY) {
         this.name = name;
         this.address = address;
         this.addressRoad = addressRoad;
         this.phone = phone;
-        this.category = category;
+        this.placeCategory = placeCategory;
         this.coorX = coorX;
         this.coorY = coorY;
     }

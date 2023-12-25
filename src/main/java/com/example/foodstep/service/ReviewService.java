@@ -5,6 +5,7 @@ import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewDto;
 import com.example.foodstep.dto.review.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
@@ -35,10 +36,11 @@ public class ReviewService {
         return reviewDtoList;
     }
 
-    public ReviewDto findReviewDetail(int id){
-        Review review = reviewRepository.findById(id).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
-        ReviewDto reviewDto = new ReviewDto(review);
-        return reviewDto;
+    @Transactional
+    public ReviewResponseDto findReviewDetail(int id){
+        Review review = reviewRepository.searchById(id).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
+        ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
+        return reviewResponseDto;
     }
 
     @Transactional

@@ -2,6 +2,8 @@ package com.example.foodstep.repository;
 
 import com.example.foodstep.domain.Review;
 
+import java.util.Optional;
+
 public interface ReviewRepositoryCustom {
-    Review searchById(Integer id);
+    Optional<Review> searchById(Integer id);
 }

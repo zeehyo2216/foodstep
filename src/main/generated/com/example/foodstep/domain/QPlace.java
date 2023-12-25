@@ -26,8 +26,6 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final StringPath addressRoad = createString("addressRoad");
 
-    public final EnumPath<com.example.foodstep.enums.Category> category = createEnum("category", com.example.foodstep.enums.Category.class);
-
     public final NumberPath<Double> coorX = createNumber("coorX", Double.class);
 
     public final NumberPath<Double> coorY = createNumber("coorY", Double.class);
@@ -48,6 +46,8 @@ public class QPlace extends EntityPathBase<Place> {
     public final StringPath notification = createString("notification");
 
     public final StringPath phone = createString("phone");
+
+    public final EnumPath<com.example.foodstep.enums.PlaceCategory> placeCategory = createEnum("placeCategory", com.example.foodstep.enums.PlaceCategory.class);
 
     public final NumberPath<Double> rateAvg = createNumber("rateAvg", Double.class);
 

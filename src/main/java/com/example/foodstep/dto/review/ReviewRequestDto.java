@@ -1,5 +1,6 @@
 package com.example.foodstep.dto.review;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,9 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewRequestDto {
 
+    @NotNull
     private int placeId;
 
-    private Float rate;
+    @NotNull
+    private float rate;
 
     private String keyword;
 

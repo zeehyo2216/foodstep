@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtTokenDto> login(@RequestBody LoginRequestDto loginRequestDto) {
+    public ResponseEntity<JwtTokenDto> login(@RequestBody @Valid LoginRequestDto loginRequestDto) {
         return new ResponseEntity<>(userService.login(loginRequestDto), HttpStatus.OK);
     }
 
