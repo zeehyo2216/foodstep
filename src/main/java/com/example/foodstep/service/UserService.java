@@ -93,7 +93,7 @@ public class UserService {
     public void register(RegisterRequestDto registerRequestDto, Authority authority) {
         String redisCode = redisTemplate
                 .opsForValue()
-                .get(IS_VERIFIED_PREFIX + registerRequestDto.getVerifiyTypeInfo());
+                .get(IS_VERIFIED_PREFIX + registerRequestDto.getVerifyTypeInfo());
 
         if (redisCode == null) {
             throw new CustomException(VERIFICATION_CODE_EXPIRED);
