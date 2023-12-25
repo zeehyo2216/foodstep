@@ -18,11 +18,15 @@ import java.util.List;
 public class User extends BaseEntity {
     @NotNull
     @Column(updatable = false, unique = true)
-    private String email;
+    private String username;
+
     @NotNull
     private String password;
-    @NotNull
-    private String nickname;
+
+    @Column(unique = true)
+    private String email;
+
+    private String phone;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
@@ -32,16 +36,17 @@ public class User extends BaseEntity {
 
     //private String uuid;
 
-    //private String name;
+    private String name;
 
-    //private String phone;
 
     @Builder
-    public User(String email, String password, String nickname, Authority authority) {
-        this.email = email;
+    public User(String username, String password, String email, String phone, String name, Authority authority) {
+        this.username = username;
         this.password = password;
-        this.nickname = nickname;
+        this.email = email;
+        this.phone = phone;
         this.authority = authority;
+        this.name = name;
     }
 
 

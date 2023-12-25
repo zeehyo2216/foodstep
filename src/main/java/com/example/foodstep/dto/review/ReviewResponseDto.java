@@ -23,7 +23,7 @@ public class ReviewResponseDto {
     private OffsetDateTime dateMod;
 
     //User
-    private String nickname;
+    private String username;
 
     //Place
     private String placeName;

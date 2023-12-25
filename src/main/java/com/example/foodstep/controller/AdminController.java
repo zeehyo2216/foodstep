@@ -1,6 +1,6 @@
 package com.example.foodstep.controller;
 
-import com.example.foodstep.dto.user.EmailRegisterRequestDto;
+import com.example.foodstep.dto.user.RegisterRequestDto;
 import com.example.foodstep.enums.Authority;
 import com.example.foodstep.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private final UserService userService;
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody EmailRegisterRequestDto emailRegisterRequestDto) {
-        userService.register(emailRegisterRequestDto, Authority.ROLE_ADMIN);
+    public ResponseEntity<String> register(@RequestBody RegisterRequestDto registerRequestDto) {
+        userService.register(registerRequestDto, Authority.ROLE_ADMIN);
         return new ResponseEntity<>("Register Success", HttpStatus.OK);
     }
 }

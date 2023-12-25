@@ -5,6 +5,7 @@ import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.JwtTokenDto;
 import com.example.foodstep.dto.user.*;
 import com.example.foodstep.enums.Authority;
+import com.example.foodstep.enums.LoginType;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.UserRepository;
 import com.example.foodstep.util.VerificationCodeUtil;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.foodstep.enums.ErrorCode.*;
+import static com.example.foodstep.enums.LoginType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -79,7 +81,7 @@ public class UserService {
             //인증 유무 Redis Cache
             redisTemplate.opsForValue().set(
                     IS_VERIFIED_PREFIX + verificationCodeRequestDto.getEmail(),
-                    "1",
+                    "email",
                     IS_VERIFIED_EXPIRE_TIME,
                     TimeUnit.MILLISECONDS
             );
@@ -88,27 +90,34 @@ public class UserService {
     }
 
     @Transactional
-    public void register(EmailRegisterRequestDto emailRegisterRequestDto, Authority authority) {
+    public void register(RegisterRequestDto registerRequestDto, Authority authority) {
         String redisCode = redisTemplate
                 .opsForValue()
-                .get(IS_VERIFIED_PREFIX + emailRegisterRequestDto.getEmail());
+                .get(IS_VERIFIED_PREFIX + registerRequestDto.getVerifiyTypeInfo());
 
         if (redisCode == null) {
             throw new CustomException(VERIFICATION_CODE_EXPIRED);
         } else {
-            userRepository.save(User.builder()
-                    .email(emailRegisterRequestDto.getEmail())
-                    .password(bCryptPasswordEncoder.encode(emailRegisterRequestDto.getPassword()))
-                    .nickname(emailRegisterRequestDto.getNickname())
-                    .authority(authority)
-                    .build());
+            userRepository.save(registerRequestDto.toUserEntity(authority, bCryptPasswordEncoder, redisCode));
         }
     }
 
     @Transactional
-    public JwtTokenDto login(EmailUserRequestDto emailUserRequestDto) {
+    public JwtTokenDto login(LoginRequestDto loginRequestDto) {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
-        UsernamePasswordAuthenticationToken authenticationToken = emailUserRequestDto.toAuthentication();
+        LoginType loginType = loginRequestDto.getLoginType();
+        String loginValue = loginRequestDto.getUsername();
+        String password = loginRequestDto.getPassword();
+        String username;
+
+        if (loginType == EMAIL) {
+            username = userRepository.findByEmail(loginValue).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND)).getUsername();
+        } else if (loginType == PHONE) {
+            username = userRepository.findByPhone(loginValue).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND)).getUsername();
+        } else {
+            username = loginValue;
+        }
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨

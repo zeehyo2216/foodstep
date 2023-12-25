@@ -10,7 +10,7 @@ import java.util.Collections;
 public class CustomUser extends User {
     private com.example.foodstep.domain.User user;
     public CustomUser(com.example.foodstep.domain.User user) {
-        super(user.getEmail(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getAuthority().toString())));
+        super(user.getUsername(), user.getPassword(), Collections.singleton(new SimpleGrantedAuthority(user.getAuthority().toString())));
         this.user = user;
     }
 }

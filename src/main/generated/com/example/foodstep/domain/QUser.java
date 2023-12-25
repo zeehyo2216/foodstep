@@ -35,11 +35,15 @@ public class QUser extends EntityPathBase<User> {
     //inherited
     public final NumberPath<Integer> id = _super.id;
 
-    public final StringPath nickname = createString("nickname");
+    public final StringPath name = createString("name");
 
     public final StringPath password = createString("password");
 
+    public final StringPath phone = createString("phone");
+
     public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
+
+    public final StringPath username = createString("username");
 
     public QUser(String variable) {
         super(User.class, forVariable(variable));
