@@ -22,7 +22,7 @@ public class RegisterRequestDto {
     private String password;
 
     @NotNull
-    private String verifiyTypeInfo; //email or phone
+    private String verifyTypeInfo; //email or phone
 
     private String name;
 
@@ -31,7 +31,7 @@ public class RegisterRequestDto {
             return User.builder()
                     .username(username)
                     .password(bCryptPasswordEncoder.encode(password))
-                    .email(verifiyTypeInfo)
+                    .email(verifyTypeInfo)
                     .authority(authority)
                     .name(name)
                     .build();
@@ -39,7 +39,7 @@ public class RegisterRequestDto {
             return User.builder()
                     .username(username)
                     .password(bCryptPasswordEncoder.encode(password))
-                    .phone(verifiyTypeInfo)
+                    .phone(verifyTypeInfo)
                     .authority(authority)
                     .name(name)
                     .build();
