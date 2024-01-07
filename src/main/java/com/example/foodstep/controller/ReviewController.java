@@ -4,7 +4,7 @@ package com.example.foodstep.controller;
 import com.example.foodstep.config.RequestUser;
 import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewDto;
-import com.example.foodstep.dto.review.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.service.ReviewService;
 import jakarta.validation.Valid;
@@ -27,13 +27,13 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.findAllReviews(), HttpStatus.OK);
     }
     @GetMapping("/detail/{id}")
-    public ResponseEntity<ReviewResponseDto> findReviewDetail(@PathVariable(name = "id") int id) throws NoSuchElementException {
+    public ResponseEntity<ReviewResponseDto> findReviewDetail(@PathVariable(name = "id") int id) {
         return new ResponseEntity<>(reviewService.findReviewDetail(id), HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto, @RequestUser User user) {
-        reviewService.addReview(reviewRequestDto, user);
+    public ResponseEntity<String> addReview(@RequestBody @Valid ReviewAddRequestDto reviewAddRequestDto, @RequestUser User user) {
+        reviewService.addReview(reviewAddRequestDto, user);
         return new ResponseEntity<>("Adding Review : Success", HttpStatus.OK);
     }
 

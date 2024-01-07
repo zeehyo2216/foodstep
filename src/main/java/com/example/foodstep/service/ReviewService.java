@@ -4,7 +4,7 @@ import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewDto;
-import com.example.foodstep.dto.review.ReviewRequestDto;
+import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
@@ -28,7 +28,7 @@ public class ReviewService {
     public List<ReviewDto> findAllReviews() {
         List<ReviewDto> reviewDtoList = new ArrayList<>();
 
-        List<Review> reviewList =  reviewRepository.findAll();
+        List<Review> reviewList = reviewRepository.findAll();
         for (Review review : reviewList) {
             ReviewDto reviewDto = new ReviewDto(review);
             reviewDtoList.add(reviewDto);
@@ -44,11 +44,11 @@ public class ReviewService {
     }
 
     @Transactional
-    public void addReview(ReviewRequestDto reviewRequestDto, User user) {
-        ReviewDto reviewDto = new ReviewDto(reviewRequestDto);
+    public void addReview(ReviewAddRequestDto reviewAddRequestDto, User user) {
+        ReviewDto reviewDto = new ReviewDto(reviewAddRequestDto);
         reviewDto.setUser(user);
 
-        Place place = placeRepository.findById(reviewRequestDto.getPlaceId()).orElseThrow(() -> new CustomException(PLACE_NOT_FOUND));
+        Place place = placeRepository.findById(reviewAddRequestDto.getPlaceId()).orElseThrow(() -> new CustomException(PLACE_NOT_FOUND));
         reviewDto.setPlace(place);
 
         Review review = reviewDto.toEntity();

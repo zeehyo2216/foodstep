@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ReviewRequestDto {
+public class ReviewAddRequestDto {
 
     @NotNull
     private int placeId;
