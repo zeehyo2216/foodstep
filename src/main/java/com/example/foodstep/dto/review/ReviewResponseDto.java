@@ -33,6 +33,9 @@ public class ReviewResponseDto {
     private String placeAddressShort;
     private PlaceCategory placeCategory;
 
+    //Tag
+    private String[] tagList;
+
     public ReviewResponseDto(Review review) {
         id = review.getId();
         rate = review.getRate();
@@ -47,6 +50,20 @@ public class ReviewResponseDto {
         placeCategory = review.getPlace().getPlaceCategory();
     }
 
-
-
+    // @QueryProjection
+    public ReviewResponseDto(Integer id, Float rate, String keyword, String contents, OffsetDateTime dateInit,
+                             OffsetDateTime dateMod, String username, String profileImgUrl, String placeName,
+                             String placeAddressShort, PlaceCategory placeCategory) {
+        this.id = id;
+        this.rate = rate;
+        this.keyword = keyword;
+        this.contents = contents;
+        this.dateInit = dateInit;
+        this.dateMod = dateMod;
+        this.username = username;
+        this.profileImgUrl = profileImgUrl;
+        this.placeName = placeName;
+        this.placeAddressShort = AddressUtil.shortenToSiOrGuAndDong(placeAddressShort);
+        this.placeCategory = placeCategory;
+    }
 }

@@ -3,6 +3,7 @@ package com.example.foodstep.service;
 import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.User;
+import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewDto;
 import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
@@ -41,6 +42,14 @@ public class ReviewService {
         Review review = reviewRepository.searchById(id).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
         return reviewResponseDto;
+    }
+
+    @Transactional
+    public List<ReviewResponseDto> searchFeedListReviews(ReviewCategoryDTO reviewCategoryDTO) {
+        List<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO);
+        for (ReviewResponseDto reviewResponseDto : reviewResponseDtoList) {
+        }
+        return reviewResponseDtoList;
     }
 
     @Transactional
