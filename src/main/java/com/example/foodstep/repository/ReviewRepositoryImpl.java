@@ -10,9 +10,11 @@ import com.example.foodstep.enums.OrderByFilter;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +41,12 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public List<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO categoryRequestDTO) { // Main Feed Algorithm
+    public Slice<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO categoryRequestDTO, Pageable pageable) { // Main Feed Algorithm
         QReview review = QReview.review;
         QPlace place = QPlace.place;
         QUser user = QUser.user;
 
-        List<ReviewResponseDto> reviewResponseDtoList = queryFactory
+        List<ReviewResponseDto> contents = queryFactory
                 .select(Projections.constructor(ReviewResponseDto.class,
                         review.id,
                         review.rate,
@@ -61,13 +63,25 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .from(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
-                // .distinct()
-                // .where()
+                .where(
+                        //no-offset 일단 보류
+
+
+                )
                 .orderBy(orderByFilterToSpecifiers(categoryRequestDTO.getOrderByFilter()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize()+1)
                 .fetch();
 
-        return reviewResponseDtoList;
-        //return new SliceImpl<>(reviews);
+        return new SliceImpl<>(contents, pageable, hasNextPage(contents, pageable.getPageSize()));
+    }
+
+    private boolean hasNextPage(List<ReviewResponseDto> contents, int pageSize) {
+        if (contents.size() > pageSize) {
+            contents.remove(pageSize);
+            return true;
+        }
+        return false;
     }
 
     public OrderSpecifier[] orderByFilterToSpecifiers(OrderByFilter orderByFilter) {
@@ -89,20 +103,4 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
     }
 
-    // no-offset 구현
-    public BooleanExpression sliceCondition(OrderByFilter orderByFilter) {
-        QReview review = QReview.review;
-
-        switch (orderByFilter) {
-            case RECENT:
-                orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.id));
-            case NEAREST:
-                orderSpecifiers.add(new OrderSpecifier(Order.ASC, review.place.coorX));
-            case RATE_HIGH:
-                orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.rate));
-            default: // DEFAULT enum
-                orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.dateInit));
-
-        }
-    }
 }

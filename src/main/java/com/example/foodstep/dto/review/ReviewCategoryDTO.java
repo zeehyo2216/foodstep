@@ -16,4 +16,6 @@ public class ReviewCategoryDTO {
     private Tag tag;
 
     private OrderByFilter orderByFilter;
+
+    private Integer pageNumber;
 }

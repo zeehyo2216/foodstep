@@ -3,14 +3,17 @@ package com.example.foodstep.service;
 import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.User;
+import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewDto;
-import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +28,7 @@ import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PlaceRepository placeRepository;
+    private static final Integer PAGE_SIZE = 10;
 
     public List<ReviewDto> findAllReviews() {
         List<ReviewDto> reviewDtoList = new ArrayList<>();
@@ -45,10 +49,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public List<ReviewResponseDto> searchFeedListReviews(ReviewCategoryDTO reviewCategoryDTO) {
-        List<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO);
-        for (ReviewResponseDto reviewResponseDto : reviewResponseDtoList) {
-        }
+    public Slice<ReviewResponseDto> searchFeedListReviews(ReviewCategoryDTO reviewCategoryDTO, User user) {
+        Pageable pageable = PageRequest.of(reviewCategoryDTO.getPageNumber(), PAGE_SIZE);
+        Slice<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO, pageable);
+
+        //User-Review Map
+
         return reviewResponseDtoList;
     }
 
