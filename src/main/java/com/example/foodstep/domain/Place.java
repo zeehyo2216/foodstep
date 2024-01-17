@@ -33,10 +33,10 @@ public class Place extends BaseEntity{
     private PlaceCategory placeCategory;
 
     @NotNull
-    private Double coorX;
+    private Double longitude;
 
     @NotNull
-    private Double coorY;
+    private Double latitude;
 
     private Double rateAvg;
 
@@ -49,14 +49,14 @@ public class Place extends BaseEntity{
 
 
     @Builder
-    public Place(String name, String address, String addressRoad, String phone, PlaceCategory placeCategory, Double coorX, Double coorY) {
+    public Place(String name, String address, String addressRoad, String phone, PlaceCategory placeCategory, Double longitude, Double latitude) {
         this.name = name;
         this.address = address;
         this.addressRoad = addressRoad;
         this.phone = phone;
         this.placeCategory = placeCategory;
-        this.coorX = coorX;
-        this.coorY = coorY;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
 

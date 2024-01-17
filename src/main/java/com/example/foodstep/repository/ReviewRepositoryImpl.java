@@ -7,9 +7,11 @@ import com.example.foodstep.domain.Review;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.enums.OrderByFilter;
+import com.example.foodstep.enums.PlaceCategory;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +43,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Slice<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO categoryRequestDTO, Pageable pageable) { // Main Feed Algorithm
+    public Slice<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO reviewCategoryDTO, Pageable pageable) { // Main Feed Algorithm
         QReview review = QReview.review;
         QPlace place = QPlace.place;
         QUser user = QUser.user;
@@ -65,10 +67,10 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .leftJoin(review.place, place)
                 .where(
                         //no-offset 일단 보류
-
+                        placeCategoryEq(reviewCategoryDTO.getPlaceCategory())
 
                 )
-                .orderBy(orderByFilterToSpecifiers(categoryRequestDTO.getOrderByFilter()))
+                .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();
@@ -92,7 +94,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
             case RECENT:
                 orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.id));
             case NEAREST:
-                orderSpecifiers.add(new OrderSpecifier(Order.ASC, review.place.coorX));
+                orderSpecifiers.add(new OrderSpecifier(Order.ASC, review.place.longitude));
             case RATE_HIGH:
                 orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.rate));
                 orderSpecifiers.add(new OrderSpecifier(Order.DESC, review.id));
@@ -101,6 +103,15 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
 
         }
         return orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()]);
+    }
+
+    public BooleanExpression placeCategoryEq(PlaceCategory placeCategory) {
+        QPlace place = QPlace.place;
+
+        if (placeCategory != null) {
+            return place.placeCategory.eq(placeCategory);
+        }
+        return null;
     }
 
 }

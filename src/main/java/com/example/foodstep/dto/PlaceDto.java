@@ -22,9 +22,9 @@ public class PlaceDto {
 
     private PlaceCategory placeCategory;
 
-    private Double coorX;
+    private Double longitude;
 
-    private Double coorY;
+    private Double latitude;
 
     private Double rateAvg;
 
@@ -43,8 +43,8 @@ public class PlaceDto {
                 .addressRoad(addressRoad)
                 .phone(phone)
                 .placeCategory(placeCategory)
-                .coorX(coorX)
-                .coorY(coorY)
+                .longitude(longitude)
+                .latitude(latitude)
                 .build();
 
     }
@@ -56,8 +56,8 @@ public class PlaceDto {
         this.addressRoad = place.getAddressRoad();
         this.phone = place.getPhone();
         this.placeCategory = place.getPlaceCategory();
-        this.coorX = place.getCoorX();
-        this.coorY = place.getCoorY();
+        this.longitude = place.getLongitude();
+        this.latitude = place.getLatitude();
         this.rateAvg = place.getRateAvg();
         this.description = place.getDescription();
         this.notification = place.getNotification();

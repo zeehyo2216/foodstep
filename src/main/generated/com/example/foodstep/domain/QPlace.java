@@ -26,10 +26,6 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final StringPath addressRoad = createString("addressRoad");
 
-    public final NumberPath<Double> coorX = createNumber("coorX", Double.class);
-
-    public final NumberPath<Double> coorY = createNumber("coorY", Double.class);
-
     //inherited
     public final DateTimePath<java.time.OffsetDateTime> dateInit = _super.dateInit;
 
@@ -40,6 +36,10 @@ public class QPlace extends EntityPathBase<Place> {
 
     //inherited
     public final NumberPath<Integer> id = _super.id;
+
+    public final NumberPath<Double> latitude = createNumber("latitude", Double.class);
+
+    public final NumberPath<Double> longitude = createNumber("longitude", Double.class);
 
     public final StringPath name = createString("name");
 

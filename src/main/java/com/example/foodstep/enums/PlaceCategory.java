@@ -7,10 +7,12 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum PlaceCategory {
-    KR_FOOD("한식"),
-    CN_FOOD("중식"),
-    CAFE("카페")
+    KR_FOOD(701, "한식"),
+    CN_FOOD(702,"중식"),
+    CAFE(703,"카페")
     ;
+
+    private final Integer code;
 
     private final String name;
 
