@@ -35,6 +35,16 @@ spring:
           writetimeout: 5000
       auth-code-expiration-millis: 1800000
 
+cloud:
+  aws:
+    s3:
+      bucket: foodstep-image-s3-bucket
+      stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: AKIA4JIKIG3LY72GCEPI
+      secretKey: <발급받은 secretKey>
+
 
 jwt:
 #  header: Authorization
