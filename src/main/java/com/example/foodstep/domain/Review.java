@@ -1,14 +1,13 @@
 package com.example.foodstep.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -32,6 +31,12 @@ public class Review extends BaseEntity{
 
     @Column(columnDefinition = "TEXT")
     private String contents;
+
+    @OneToMany(mappedBy = "review")
+    private List<ReviewImage> imageList;
+
+    @OneToMany(mappedBy = "review")
+    private List<ReviewTagMap> tagMapList;
 
     @Builder
     public Review(User user, Place place, Float rate, String keyword, String contents) {

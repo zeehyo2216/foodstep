@@ -35,6 +35,8 @@ public class QReview extends EntityPathBase<Review> {
     //inherited
     public final NumberPath<Integer> id = _super.id;
 
+    public final ListPath<ReviewImage, QReviewImage> imageList = this.<ReviewImage, QReviewImage>createList("imageList", ReviewImage.class, QReviewImage.class, PathInits.DIRECT2);
+
     public final StringPath keyword = createString("keyword");
 
     public final QPlace place;

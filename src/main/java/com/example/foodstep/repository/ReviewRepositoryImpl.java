@@ -63,18 +63,30 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         user.profileImgUrl,
                         place.name,
                         place.address,
-                        place.placeCategory
+                        place.placeCategory,
+                        place.rateAvg
                         ))
                 .from(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
                 .where(
                         //no-offset 일단 보류
+
+                        // 카테고리 필터
                         placeCategoryEq(reviewCategoryDTO.getPlaceCategory()),
-                        distanceLoe(reviewCategoryDTO.getDistance(), reviewCategoryDTO.getCurrentLocation())
+                        distanceLoe(reviewCategoryDTO.getDistance(), reviewCategoryDTO.getCurrentLocation()),
+
+                        // 공통 적용 필터
+                        review.contents.length().goe(30),
+                        review.rate.goe(3),
+                        review.imageList.size().gt(1)
+
+                        //조회
+
 
                 )
-                .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
+                .orderBy(review.id.desc())
+                // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .fetch();

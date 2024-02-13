@@ -8,11 +8,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewTagMap {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class ReviewTagMap extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 

@@ -59,5 +59,9 @@ public class Place extends BaseEntity{
         this.latitude = latitude;
     }
 
+    public long getReviewCount() {
+        return reviews.size();
+    }
+
 
 }

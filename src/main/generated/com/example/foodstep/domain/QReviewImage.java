@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QReviewTagMap is a Querydsl query type for ReviewTagMap
+ * QReviewImage is a Querydsl query type for ReviewImage
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QReviewTagMap extends EntityPathBase<ReviewTagMap> {
+public class QReviewImage extends EntityPathBase<ReviewImage> {
 
-    private static final long serialVersionUID = -351546255L;
+    private static final long serialVersionUID = 394495596L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QReviewTagMap reviewTagMap = new QReviewTagMap("reviewTagMap");
+    public static final QReviewImage reviewImage = new QReviewImage("reviewImage");
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
@@ -33,30 +33,29 @@ public class QReviewTagMap extends EntityPathBase<ReviewTagMap> {
     //inherited
     public final NumberPath<Integer> id = _super.id;
 
+    public final StringPath imagePath = createString("imagePath");
+
     public final QReview review;
 
-    public final QTag tag;
-
-    public QReviewTagMap(String variable) {
-        this(ReviewTagMap.class, forVariable(variable), INITS);
+    public QReviewImage(String variable) {
+        this(ReviewImage.class, forVariable(variable), INITS);
     }
 
-    public QReviewTagMap(Path<? extends ReviewTagMap> path) {
+    public QReviewImage(Path<? extends ReviewImage> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QReviewTagMap(PathMetadata metadata) {
+    public QReviewImage(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QReviewTagMap(PathMetadata metadata, PathInits inits) {
-        this(ReviewTagMap.class, metadata, inits);
+    public QReviewImage(PathMetadata metadata, PathInits inits) {
+        this(ReviewImage.class, metadata, inits);
     }
 
-    public QReviewTagMap(Class<? extends ReviewTagMap> type, PathMetadata metadata, PathInits inits) {
+    public QReviewImage(Class<? extends ReviewImage> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.review = inits.isInitialized("review") ? new QReview(forProperty("review"), inits.get("review")) : null;
-        this.tag = inits.isInitialized("tag") ? new QTag(forProperty("tag")) : null;
     }
 
 }
