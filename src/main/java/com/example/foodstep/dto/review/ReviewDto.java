@@ -48,10 +48,10 @@ public class ReviewDto {
         this.dateMod = review.getDateMod();
     }
 
-    public ReviewDto(ReviewAddRequestDto reviewAddRequestDto) {
-        this.rate = reviewAddRequestDto.getRate();
-        this.keyword = reviewAddRequestDto.getKeyword();
-        this.contents = reviewAddRequestDto.getContents();
+    public ReviewDto(ReviewRequestDto reviewRequestDto) {
+        this.rate = reviewRequestDto.getRate();
+        this.keyword = reviewRequestDto.getKeyword();
+        this.contents = reviewRequestDto.getContents();
     }
 
 

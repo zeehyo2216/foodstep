@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 public class ReviewResponseDto {
     //Review
+
     private Integer id;
 
     private Float rate;

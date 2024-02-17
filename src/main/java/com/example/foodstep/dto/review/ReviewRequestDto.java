@@ -6,8 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class ReviewAddRequestDto {
-
+public class ReviewRequestDto {
     @NotNull
     private int placeId;
 
@@ -17,4 +16,8 @@ public class ReviewAddRequestDto {
     private String keyword;
 
     private String contents;
+
+    //For Edit
+    private int reviewId;
+
 }

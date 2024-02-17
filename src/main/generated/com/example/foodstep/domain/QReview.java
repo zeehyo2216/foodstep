@@ -43,6 +43,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public final NumberPath<Float> rate = createNumber("rate", Float.class);
 
+    public final ListPath<ReviewTagMap, QReviewTagMap> tagMapList = this.<ReviewTagMap, QReviewTagMap>createList("tagMapList", ReviewTagMap.class, QReviewTagMap.class, PathInits.DIRECT2);
+
     public final QUser user;
 
     public QReview(String variable) {

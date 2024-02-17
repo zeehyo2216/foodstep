@@ -49,7 +49,7 @@ public class QPlace extends EntityPathBase<Place> {
 
     public final EnumPath<com.example.foodstep.enums.PlaceCategory> placeCategory = createEnum("placeCategory", com.example.foodstep.enums.PlaceCategory.class);
 
-    public final NumberPath<Double> rateAvg = createNumber("rateAvg", Double.class);
+    public final NumberPath<Float> rateAvg = createNumber("rateAvg", Float.class);
 
     public final ListPath<Review, QReview> reviews = this.<Review, QReview>createList("reviews", Review.class, QReview.class, PathInits.DIRECT2);
 

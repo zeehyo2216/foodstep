@@ -1,9 +1,6 @@
 package com.example.foodstep.repository;
 
-import com.example.foodstep.domain.QPlace;
-import com.example.foodstep.domain.QReview;
-import com.example.foodstep.domain.QUser;
-import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.*;
 import com.example.foodstep.dto.LocationDto;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewResponseDto;
@@ -15,6 +12,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +27,8 @@ import java.util.Optional;
 public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
+    // findById 는 join을 걸지 않고, id로 join table 에 접근하여 N+1 문제 발생하기 때문에
+    // querydsl 로 leftjoin 처리를 해준것이다.
     @Override
     public Optional<Review> searchById(Integer id) {
         QReview review = QReview.review;
@@ -46,13 +46,15 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     }
 
     @Override
-    public Slice<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO reviewCategoryDTO, Pageable pageable) { // Main Feed Algorithm
+    public Slice<ReviewResponseDto> searchAllByMultipleCategories(ReviewCategoryDTO reviewCategoryDTO, User viewUser, Pageable pageable) { // Main Feed Algorithm
         QReview review = QReview.review;
         QPlace place = QPlace.place;
         QUser user = QUser.user;
+        QReviewViewed reviewViewed = QReviewViewed.reviewViewed;
 
         List<ReviewResponseDto> contents = queryFactory
                 .select(Projections.constructor(ReviewResponseDto.class,
+                        // review,
                         review.id,
                         review.rate,
                         review.keyword,
@@ -79,11 +81,17 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         // 공통 적용 필터
                         review.contents.length().goe(30),
                         review.rate.goe(3),
-                        review.imageList.size().gt(1)
+                        // review.imageList.size().gt(1)
 
                         //조회
-
-
+                        JPAExpressions
+                                .selectOne()
+                                .from(reviewViewed)
+                                .where(
+                                        reviewViewed.review.eq(review),
+                                        reviewViewed.user.eq(viewUser)
+                                )
+                                .notExists()
                 )
                 .orderBy(review.id.desc())
                 // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
