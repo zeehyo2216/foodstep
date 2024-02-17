@@ -51,6 +51,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QPlace place = QPlace.place;
         QUser user = QUser.user;
         QReviewViewed reviewViewed = QReviewViewed.reviewViewed;
+        QReviewImage reviewImage = QReviewImage.reviewImage;
 
         List<ReviewResponseDto> contents = queryFactory
                 .select(Projections.constructor(ReviewResponseDto.class,
@@ -66,11 +67,13 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                         place.name,
                         place.address,
                         place.placeCategory,
-                        place.rateAvg
+                        place.rateAvg,
+                        Projections.list(reviewImage.imagePath)
                         ))
                 .from(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
+                .leftJoin(review.imageList, reviewImage)
                 .where(
                         //no-offset 일단 보류
 

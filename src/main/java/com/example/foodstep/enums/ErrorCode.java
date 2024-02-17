@@ -27,9 +27,10 @@ public enum ErrorCode {
     // 404 NOT_FOUND : Resource 를 찾을 수 없음
     MEMBER_NOT_FOUND(NOT_FOUND, "해당 유저 정보를 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
-    VERIFICATION_CODE_EXPIRED(NOT_FOUND, "인증 코드가 만료되었습니다. 처음부터 다시 시도해주세요."),
+    VERIFICATION_CODE_EXPIRED(NOT_FOUND, "인증 코드가 만료되었습니다. 처음부터 다시 시도해주세요"),
     PLACE_NOT_FOUND(NOT_FOUND, "등록되지 않은 음식점입니다"),
-    REVIEW_NOT_FOUND(NOT_FOUND, "등록되지 않은 발자국입니다")
+    REVIEW_NOT_FOUND(NOT_FOUND, "등록되지 않은 발자국입니다"),
+    REVIEWVIEWED_NOT_FOUND(NOT_FOUND, "조회하지 않은 발자국입니다")
 
 
     // 504

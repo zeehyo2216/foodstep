@@ -1,12 +1,14 @@
 package com.example.foodstep.dto.review;
 
 import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.Tag;
 import com.example.foodstep.enums.PlaceCategory;
 import com.example.foodstep.util.AddressUtil;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -20,6 +22,8 @@ public class ReviewResponseDto {
     private String keyword;
 
     private String contents;
+
+    private List<String> imageList;
 
     private OffsetDateTime dateInit;
 
@@ -36,13 +40,14 @@ public class ReviewResponseDto {
     private Float rateAvg;
 
     //Tag
-    private String[] tagList;
+    private List<Tag> tagList;
 
     public ReviewResponseDto(Review review) {
         id = review.getId();
         rate = review.getRate();
         keyword = review.getKeyword();
         contents = review.getContents();
+        // imagePath = review.getImagePath();
         dateInit = review.getDateInit();
         dateMod = review.getDateMod();
         username = review.getUser().getUsername();
@@ -54,9 +59,10 @@ public class ReviewResponseDto {
     }
 
     // @QueryProjection
-    public ReviewResponseDto(Integer id, Float rate, String keyword, String contents, OffsetDateTime dateInit,
-                             OffsetDateTime dateMod, String username, String profileImgUrl, String placeName,
-                             String placeAddressShort, PlaceCategory placeCategory, Float rateAvg) {
+    public ReviewResponseDto(Integer id, Float rate, String keyword, String contents,
+                             OffsetDateTime dateInit,  OffsetDateTime dateMod, String username, String profileImgUrl,
+                             String placeName, String placeAddressShort, PlaceCategory placeCategory, Float rateAvg,
+                             List<String> imageList) {
         this.id = id;
         this.rate = rate;
         this.keyword = keyword;
@@ -69,5 +75,6 @@ public class ReviewResponseDto {
         this.placeAddressShort = AddressUtil.shortenToSiOrGuAndDong(placeAddressShort);
         this.placeCategory = placeCategory;
         this.rateAvg = rateAvg;
+        this.imageList = imageList;
     }
 }

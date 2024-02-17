@@ -20,8 +20,9 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.example.foodstep.enums.ErrorCode.PLACE_NOT_FOUND;
-import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
+import java.util.function.Supplier;
+
+import static com.example.foodstep.enums.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -49,7 +50,6 @@ public class ReviewService {
 
         //Add to ReviewViewed(user-review mapped) table with light type.
         eventPublisher.publishEvent(new AddReviewViewEvent(reviewResponseDtoList.getContent(), user));
-        System.out.println("Insert Start");
 
         return reviewResponseDtoList;
     }
@@ -77,11 +77,20 @@ public class ReviewService {
     @Transactional
     public void viewReviewDeep(int reviewId, User user) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
+        ReviewViewed reviewViewed = reviewViewedRepository.findByReviewAndUser(review, user)
+                .orElseGet(insertViewType(review, user));
+        if (reviewViewed != null) {
+            reviewViewed.updateViewType(VIEW_TYPE_DEEP);
+        }
+    }
+
+    public Supplier<? extends ReviewViewed> insertViewType(Review review, User user) {
         ReviewViewed reviewViewed = ReviewViewed.builder()
                 .review(review)
                 .user(user)
                 .type(VIEW_TYPE_DEEP)
                 .build();
         reviewViewedRepository.save(reviewViewed);
+        return () -> reviewViewed;
     }
 }

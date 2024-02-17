@@ -28,4 +28,8 @@ public class ReviewViewed extends BaseEntity {
         this.review = review;
         this.type = type;
     }
+
+    public void updateViewType(Integer type) {
+        this.type = type;
+    }
 }
