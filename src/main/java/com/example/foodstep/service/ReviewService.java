@@ -7,19 +7,18 @@ import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
+import com.example.foodstep.event.AddReviewViewEvent;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
 import com.example.foodstep.repository.ReviewViewedRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.example.foodstep.enums.ErrorCode.PLACE_NOT_FOUND;
 import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
@@ -30,6 +29,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PlaceRepository placeRepository;
     private final ReviewViewedRepository reviewViewedRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     private static final Integer PAGE_SIZE = 10;
     private static final Integer VIEW_TYPE_LIGHT = 1;
@@ -47,19 +47,9 @@ public class ReviewService {
         Pageable pageable = PageRequest.of(reviewCategoryDTO.getPageNumber(), PAGE_SIZE);
         Slice<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO, user, pageable);
 
-        //User-Review Map
-        List<ReviewViewed> reviewViewedList = new ArrayList<>();
-        for (ReviewResponseDto reviewResponseDto : reviewResponseDtoList) {
-            Review review = reviewRepository.searchById(reviewResponseDto.getId())
-                                            .orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
-            ReviewViewed reviewViewed = ReviewViewed.builder()
-                                                    .review(review)
-                                                    .user(user)
-                                                    .type(VIEW_TYPE_LIGHT)
-                                                    .build();
-            reviewViewedList.add(reviewViewed);
-        }
-        reviewViewedRepository.saveAll(reviewViewedList);
+        //Add to ReviewViewed(user-review mapped) table with light type.
+        eventPublisher.publishEvent(new AddReviewViewEvent(reviewResponseDtoList.getContent(), user));
+        System.out.println("Insert Start");
 
         return reviewResponseDtoList;
     }
