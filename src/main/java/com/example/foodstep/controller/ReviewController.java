@@ -14,8 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.NoSuchElementException;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path="/review")
@@ -32,6 +30,12 @@ public class ReviewController {
         return new ResponseEntity<>(reviewService.searchFeedListReviews(reviewCategoryDTO, user), HttpStatus.OK);
     }
 
+    @PostMapping("/view/{id}")
+    public ResponseEntity<String> viewReviewDeep(@PathVariable(name = "id") int id, @RequestUser User user) {
+        reviewService.viewReviewDeep(id, user);
+        return new ResponseEntity<>("Editing Review : Success", HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<String> addReview(@RequestBody @Valid ReviewRequestDto reviewRequestDto, @RequestUser User user) {
         reviewService.addReview(reviewRequestDto, user);
@@ -39,7 +43,7 @@ public class ReviewController {
     }
 
     @PostMapping("/edit")
-    public ResponseEntity<String> editReview(@RequestBody ReviewRequestDto reviewRequestDto) throws NoSuchElementException {
+    public ResponseEntity<String> editReview(@RequestBody ReviewRequestDto reviewRequestDto){
         reviewService.editReview(reviewRequestDto);
         return new ResponseEntity<>("Editing Review : Success", HttpStatus.OK);
     }
