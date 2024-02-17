@@ -38,7 +38,7 @@ public class Place extends BaseEntity{
     @NotNull
     private Double latitude;
 
-    private Double rateAvg;
+    private Float rateAvg;
 
     private String description;
 

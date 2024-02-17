@@ -26,7 +26,7 @@ public class PlaceDto {
 
     private Double latitude;
 
-    private Double rateAvg;
+    private Float rateAvg;
 
     private String description;
 

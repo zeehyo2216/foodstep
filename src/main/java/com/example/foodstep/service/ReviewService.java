@@ -2,6 +2,7 @@ package com.example.foodstep.service;
 
 import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.ReviewViewed;
 import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewAddRequestDto;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
@@ -10,6 +11,7 @@ import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
 import com.example.foodstep.repository.ReviewRepository;
+import com.example.foodstep.repository.ReviewViewedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +30,8 @@ import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final PlaceRepository placeRepository;
+    private final ReviewViewedRepository reviewViewedRepository;
+
     private static final Integer PAGE_SIZE = 10;
 
     public List<ReviewDto> findAllReviews() {
@@ -54,6 +58,12 @@ public class ReviewService {
         Slice<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO, pageable);
 
         //User-Review Map
+        List<ReviewViewed> reviewViewedList = new ArrayList<>();
+        for (ReviewResponseDto reviewResponseDto : reviewResponseDtoList) {
+            reviewResponseDto.getId();
+        }
+
+        // reviewViewedRepository.saveAll();
 
         return reviewResponseDtoList;
     }
