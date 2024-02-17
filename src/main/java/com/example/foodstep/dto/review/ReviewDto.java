@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
 
-
+//DON'T USE!! NOT USED
 @Data
 @NoArgsConstructor
 public class ReviewDto {

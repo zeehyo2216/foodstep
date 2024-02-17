@@ -4,9 +4,8 @@ import com.example.foodstep.domain.Place;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.ReviewViewed;
 import com.example.foodstep.domain.User;
-import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
-import com.example.foodstep.dto.review.ReviewDto;
+import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.PlaceRepository;
@@ -67,13 +66,15 @@ public class ReviewService {
 
     @Transactional
     public void addReview(ReviewRequestDto reviewRequestDto, User user) {
-        ReviewDto reviewDto = new ReviewDto(reviewRequestDto);
-        reviewDto.setUser(user);
-
         Place place = placeRepository.findById(reviewRequestDto.getPlaceId()).orElseThrow(() -> new CustomException(PLACE_NOT_FOUND));
-        reviewDto.setPlace(place);
 
-        Review review = reviewDto.toEntity();
+        Review review = Review.builder()
+                        .user(user)
+                        .place(place)
+                        .rate(reviewRequestDto.getRate())
+                        .keyword(reviewRequestDto.getKeyword())
+                        .contents(reviewRequestDto.getContents())
+                        .build();
         reviewRepository.save(review);
     }
 
