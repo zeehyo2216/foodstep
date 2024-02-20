@@ -1,16 +1,18 @@
 package com.example.foodstep.dto.review;
 
-import com.example.foodstep.domain.Review;
-import com.example.foodstep.domain.Tag;
+import com.example.foodstep.domain.*;
 import com.example.foodstep.enums.PlaceCategory;
 import com.example.foodstep.util.AddressUtil;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+// @Builder
 @NoArgsConstructor
 public class ReviewResponseDto {
     //Review
@@ -23,7 +25,7 @@ public class ReviewResponseDto {
 
     private String contents;
 
-    private List<String> imageList;
+    private final List<String> imagePathList = new ArrayList<>();
 
     private OffsetDateTime dateInit;
 
@@ -47,7 +49,6 @@ public class ReviewResponseDto {
         rate = review.getRate();
         keyword = review.getKeyword();
         contents = review.getContents();
-        // imagePath = review.getImagePath();
         dateInit = review.getDateInit();
         dateMod = review.getDateMod();
         username = review.getUser().getUsername();
@@ -58,7 +59,6 @@ public class ReviewResponseDto {
         rateAvg = review.getPlace().getRateAvg();
     }
 
-    // @QueryProjection
     public ReviewResponseDto(Integer id, Float rate, String keyword, String contents,
                              OffsetDateTime dateInit,  OffsetDateTime dateMod, String username, String profileImgUrl,
                              String placeName, String placeAddressShort, PlaceCategory placeCategory, Float rateAvg,
@@ -75,6 +75,27 @@ public class ReviewResponseDto {
         this.placeAddressShort = AddressUtil.shortenToSiOrGuAndDong(placeAddressShort);
         this.placeCategory = placeCategory;
         this.rateAvg = rateAvg;
-        this.imageList = imageList;
+        // this.imagePathList = imageList;
+    }
+
+    @QueryProjection
+    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList) {
+        id = review.getId();
+        rate = review.getRate();
+        keyword = review.getKeyword();
+        contents = review.getContents();
+        dateInit = review.getDateInit();
+        dateMod = review.getDateMod();
+        username = user.getUsername();
+        profileImgUrl = user.getProfileImgUrl();
+        placeName = place.getName();
+        placeAddressShort = AddressUtil.shortenToSiOrGuAndDong(place.getAddress());
+        placeCategory = place.getPlaceCategory();
+        rateAvg = place.getRateAvg();
+        imageList.forEach(image -> {
+            if (image != null) {
+                imagePathList.add(image.getImagePath());
+            }
+        });
     }
 }

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,7 +34,7 @@ public class Review extends BaseEntity{
     private String contents;
 
     @OneToMany(mappedBy = "review")
-    private List<ReviewImage> imageList;
+    private List<ReviewImage> imageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review")
     private List<ReviewTagMap> tagMapList;

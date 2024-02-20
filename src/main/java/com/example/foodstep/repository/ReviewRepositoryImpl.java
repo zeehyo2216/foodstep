@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
+
 @RequiredArgsConstructor
 public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -54,23 +57,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QReviewImage reviewImage = QReviewImage.reviewImage;
 
         List<ReviewResponseDto> contents = queryFactory
-                .select(Projections.constructor(ReviewResponseDto.class,
-                        // review,
-                        review.id,
-                        review.rate,
-                        review.keyword,
-                        review.contents,
-                        review.dateInit,
-                        review.dateMod,
-                        user.username,
-                        user.profileImgUrl,
-                        place.name,
-                        place.address,
-                        place.placeCategory,
-                        place.rateAvg,
-                        Projections.list(reviewImage.imagePath)
-                        ))
-                .from(review)
+                .selectFrom(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
                 .leftJoin(review.imageList, reviewImage)
@@ -100,7 +87,10 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
-                .fetch();
+                .transform(groupBy(review.id).list(
+                        Projections.constructor(ReviewResponseDto.class,
+                                review, user, place, list(reviewImage))
+                ));
 
         return new SliceImpl<>(contents, pageable, hasNextPage(contents, pageable.getPageSize()));
     }
