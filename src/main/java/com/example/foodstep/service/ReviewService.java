@@ -32,7 +32,7 @@ public class ReviewService {
     private final ReviewViewedRepository reviewViewedRepository;
     private final ApplicationEventPublisher eventPublisher;
 
-    private static final Integer PAGE_SIZE = 10;
+    private static final Integer PAGE_SIZE = 30; // 발자국 당 이미지 평균 개수 * 10
     private static final Integer VIEW_TYPE_LIGHT = 1;
     private static final Integer VIEW_TYPE_DEEP = 2;
 
