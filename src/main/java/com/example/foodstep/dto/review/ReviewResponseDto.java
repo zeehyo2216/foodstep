@@ -1,6 +1,7 @@
 package com.example.foodstep.dto.review;
 
 import com.example.foodstep.domain.*;
+import com.example.foodstep.dto.TagDto;
 import com.example.foodstep.enums.PlaceCategory;
 import com.example.foodstep.util.AddressUtil;
 import com.querydsl.core.annotations.QueryProjection;
@@ -42,7 +43,7 @@ public class ReviewResponseDto {
     private Float rateAvg;
 
     //Tag
-    private List<Tag> tagList;
+    private List<TagDto> tagList;
 
     public ReviewResponseDto(Review review) {
         id = review.getId();
@@ -79,7 +80,7 @@ public class ReviewResponseDto {
     }
 
     @QueryProjection
-    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList) {
+    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList, List<Tag> tags) {
         id = review.getId();
         rate = review.getRate();
         keyword = review.getKeyword();
@@ -95,6 +96,11 @@ public class ReviewResponseDto {
         imageList.forEach(image -> {
             if (image != null) {
                 imagePathList.add(image.getImagePath());
+            }
+        });
+        tags.forEach(tag -> {
+            if (tag != null) {
+                tagList.add(new TagDto(tag.getId(), tag.getName()));
             }
         });
     }
