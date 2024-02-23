@@ -16,7 +16,7 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: 15.164.191.125:3306
       port: 6379
   mail:
     host: smtp.gmail.com
