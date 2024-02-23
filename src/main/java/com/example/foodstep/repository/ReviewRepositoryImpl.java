@@ -55,12 +55,16 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QUser user = QUser.user;
         QReviewViewed reviewViewed = QReviewViewed.reviewViewed;
         QReviewImage reviewImage = QReviewImage.reviewImage;
+        QReviewTagMap reviewTagMap = QReviewTagMap.reviewTagMap;
+        QTag tag = QTag.tag;
 
         List<ReviewResponseDto> contents = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
                 .leftJoin(review.imageList, reviewImage)
+                .leftJoin(review.tagMapList, reviewTagMap)
+                .leftJoin(reviewTagMap.tag, tag)
                 .where(
                         //no-offset 일단 보류
 
@@ -83,13 +87,14 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                                 )
                                 .notExists()
                 )
+                .distinct()
                 .orderBy(review.id.desc())
                 // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
                 .transform(groupBy(review.id).list(
                         Projections.constructor(ReviewResponseDto.class,
-                                review, user, place, list(reviewImage))
+                                review, user, place, list(reviewImage), list(tag))
                 ));
 
         return new SliceImpl<>(contents, pageable, hasNextPage(contents, pageable.getPageSize()));
