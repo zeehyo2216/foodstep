@@ -48,6 +48,10 @@ public class Review extends BaseEntity{
         this.contents = contents;
     }
 
+    public Review(Integer id) {
+        this.id = id;
+    }
+
 
     public void updateReview(Float rate, String keyword, String contents){
         this.rate = rate;

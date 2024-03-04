@@ -16,8 +16,6 @@ import java.util.List;
 // @Builder
 @NoArgsConstructor
 public class ReviewResponseDto {
-    //Review
-
     private Integer id;
 
     private Float rate;
@@ -25,8 +23,6 @@ public class ReviewResponseDto {
     private String keyword;
 
     private String contents;
-
-    private final List<String> imagePathList = new ArrayList<>();
 
     private OffsetDateTime dateInit;
 
@@ -42,8 +38,10 @@ public class ReviewResponseDto {
     private PlaceCategory placeCategory;
     private Float rateAvg;
 
-    //Tag
-    private List<TagDto> tagList;
+    //List
+    private final List<String> imagePathList = new ArrayList<>();
+
+    private final List<TagDto> tagList = new ArrayList<>();
 
     public ReviewResponseDto(Review review) {
         id = review.getId();
