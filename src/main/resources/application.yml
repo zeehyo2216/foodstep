@@ -16,8 +16,9 @@ spring:
 
   data:
     redis:
-      host: 15.164.191.125:3306
+      host: 15.164.191.125
       port: 6379
+      password : qpwo1029
   mail:
     host: smtp.gmail.com
     port: 587
