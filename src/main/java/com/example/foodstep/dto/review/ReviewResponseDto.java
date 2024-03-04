@@ -5,10 +5,8 @@ import com.example.foodstep.dto.TagDto;
 import com.example.foodstep.enums.PlaceCategory;
 import com.example.foodstep.util.AddressUtil;
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -18,10 +16,6 @@ import java.util.List;
 // @Builder
 @NoArgsConstructor
 public class ReviewResponseDto {
-    //Review
-    @Setter(AccessLevel.NONE)
-    private Review review;
-
     private Integer id;
 
     private Float rate;
@@ -107,6 +101,5 @@ public class ReviewResponseDto {
                 tagList.add(new TagDto(tag.getId(), tag.getName()));
             }
         });
-        this.review = review;
     }
 }
