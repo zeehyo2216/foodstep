@@ -92,13 +92,16 @@ public class ReviewResponseDto {
         placeCategory = place.getPlaceCategory();
         rateAvg = place.getRateAvg();
         imageList.forEach(image -> {
-            if (image != null) {
+            if (image != null && !imagePathList.contains(image.getImagePath())) {  // querydsl Cartesian 곱 방지 (쿼리 로직에 대한 방안 검토..)
                 imagePathList.add(image.getImagePath());
             }
         });
         tags.forEach(tag -> {
             if (tag != null) {
-                tagList.add(new TagDto(tag.getId(), tag.getName()));
+                TagDto tagDto = new TagDto(tag.getId(), tag.getName());
+                if (!tagList.contains(tagDto)) { // querydsl Cartesian 곱 방지 (쿼리 로직에 대한 방안 검토..)
+                    tagList.add(tagDto);
+                }
             }
         });
     }
