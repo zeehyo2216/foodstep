@@ -3,7 +3,6 @@ package com.example.foodstep.event;
 import com.example.foodstep.domain.Review;
 import com.example.foodstep.domain.ReviewViewed;
 import com.example.foodstep.dto.review.ReviewResponseDto;
-import com.example.foodstep.model.CustomException;
 import com.example.foodstep.repository.ReviewRepository;
 import com.example.foodstep.repository.ReviewViewedRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,6 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
@@ -32,8 +29,11 @@ public class AddReviewViewEventListener {
     public void addReviewViewed(AddReviewViewEvent event) {
         List<ReviewViewed> reviewViewedList = new ArrayList<>();
         for (ReviewResponseDto reviewResponseDto : event.getReviewResponseDtoList()) {
-            Review review = reviewRepository.findById(reviewResponseDto.getId())
-                    .orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
+
+//            Review review = reviewRepository.findById(reviewResponseDto.getId())
+//                    .orElseThrow(() -> new CustomException(REVIEW_NOT_FOUND));
+            Review review = new Review(reviewResponseDto.getId());
+
             ReviewViewed reviewViewed = ReviewViewed.builder()
                     .review(review)
                     .user(event.getUser())

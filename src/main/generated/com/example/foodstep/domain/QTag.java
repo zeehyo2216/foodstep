@@ -19,16 +19,7 @@ public class QTag extends EntityPathBase<Tag> {
 
     public static final QTag tag = new QTag("tag");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
-
-    //inherited
-    public final DateTimePath<java.time.OffsetDateTime> dateInit = _super.dateInit;
-
-    //inherited
-    public final DateTimePath<java.time.OffsetDateTime> dateMod = _super.dateMod;
-
-    //inherited
-    public final NumberPath<Integer> id = _super.id;
+    public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final StringPath name = createString("name");
 

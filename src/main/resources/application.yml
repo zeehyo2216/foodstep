@@ -13,11 +13,13 @@ spring:
       hibernate:
         format_sql: 'true'
         show_sql: 'true'
+        default_batch_fetch_size: 30
 
   data:
     redis:
-      host: 15.164.191.125:3306
+      host: 15.164.191.125
       port: 6379
+      password: qpwo1029
   mail:
     host: smtp.gmail.com
     port: 587

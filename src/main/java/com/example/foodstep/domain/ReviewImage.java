@@ -1,5 +1,6 @@
 package com.example.foodstep.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -14,6 +15,7 @@ public class ReviewImage extends BaseEntity {
     @NotNull
     private String imagePath;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
 }

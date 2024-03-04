@@ -18,13 +18,13 @@ import java.time.OffsetDateTime;
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    protected Integer id;
 
     @CreatedDate
     @Column(updatable = false)
-    private OffsetDateTime dateInit;
+    protected OffsetDateTime dateInit;
 
     @LastModifiedDate
-    private OffsetDateTime dateMod;
+    protected OffsetDateTime dateMod;
 
 }

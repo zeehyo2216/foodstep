@@ -13,8 +13,8 @@ public class QReviewResponseDto extends ConstructorExpression<ReviewResponseDto>
 
     private static final long serialVersionUID = -1914728590L;
 
-    public QReviewResponseDto(com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.Review> review, com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.User> user, com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.Place> place, com.querydsl.core.types.Expression<? extends java.util.List<com.example.foodstep.domain.ReviewImage>> imageList) {
-        super(ReviewResponseDto.class, new Class<?>[]{com.example.foodstep.domain.Review.class, com.example.foodstep.domain.User.class, com.example.foodstep.domain.Place.class, java.util.List.class}, review, user, place, imageList);
+    public QReviewResponseDto(com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.Review> review, com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.User> user, com.querydsl.core.types.Expression<? extends com.example.foodstep.domain.Place> place, com.querydsl.core.types.Expression<? extends java.util.List<com.example.foodstep.domain.ReviewImage>> imageList, com.querydsl.core.types.Expression<? extends java.util.List<com.example.foodstep.domain.Tag>> tags) {
+        super(ReviewResponseDto.class, new Class<?>[]{com.example.foodstep.domain.Review.class, com.example.foodstep.domain.User.class, com.example.foodstep.domain.Place.class, java.util.List.class, java.util.List.class}, review, user, place, imageList, tags);
     }
 
 }

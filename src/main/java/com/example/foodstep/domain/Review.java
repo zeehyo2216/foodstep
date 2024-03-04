@@ -1,5 +1,6 @@
 package com.example.foodstep.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -34,9 +35,11 @@ public class Review extends BaseEntity{
     private String contents;
 
     @OneToMany(mappedBy = "review")
+    @JsonIgnore
     private List<ReviewImage> imageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "review")
+    @JsonIgnore
     private List<ReviewTagMap> tagMapList;
 
     @Builder
@@ -46,6 +49,10 @@ public class Review extends BaseEntity{
         this.rate = rate;
         this.keyword = keyword;
         this.contents = contents;
+    }
+
+    public Review(Integer id) {
+        this.id = id;
     }
 
 
