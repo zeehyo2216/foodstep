@@ -39,8 +39,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QUser user = QUser.user;
 
         return Optional.ofNullable(queryFactory
-                .select(review)
-                .from(review)
+                .selectFrom(review)
                 .leftJoin(review.user, user).fetchJoin()
                 .leftJoin(review.place, place).fetchJoin()
                 .distinct()
@@ -58,13 +57,11 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QReviewTagMap reviewTagMap = QReviewTagMap.reviewTagMap;
         QTag tag = QTag.tag;
 
-        List<ReviewResponseDto> contents = queryFactory
-                .selectFrom(review)
+        List<Integer> reviewIdList = queryFactory
+                .select(review.id)
+                .from(review)
                 .leftJoin(review.user, user)
                 .leftJoin(review.place, place)
-                .leftJoin(review.imageList, reviewImage)
-                .leftJoin(review.tagMapList, reviewTagMap)
-                .leftJoin(reviewTagMap.tag, tag)
                 .where(
                         //no-offset 일단 보류
 
@@ -87,11 +84,23 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                                 )
                                 .notExists()
                 )
-                .distinct()
                 .orderBy(review.id.desc())
                 // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize()+1)
+                .fetch();
+
+        List<ReviewResponseDto> contents = queryFactory
+                .selectFrom(review)
+                .leftJoin(review.user, user)
+                .leftJoin(review.place, place)
+                .leftJoin(review.imageList, reviewImage)
+                .leftJoin(review.tagMapList, reviewTagMap)
+                .leftJoin(reviewTagMap.tag, tag)
+                .where(
+                        review.id.in(reviewIdList)
+                )
+                .orderBy(review.id.desc())
                 .transform(groupBy(review.id).list(
                         Projections.constructor(ReviewResponseDto.class,
                                 review, user, place, list(reviewImage), list(tag))

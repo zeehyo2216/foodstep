@@ -43,6 +43,11 @@ public class ReviewResponseDto {
 
     private final List<TagDto> tagList = new ArrayList<>();
 
+    //Count
+    private Integer likeCount;
+    private Integer commentCount;
+
+
     public ReviewResponseDto(Review review) {
         id = review.getId();
         rate = review.getRate();
@@ -78,7 +83,7 @@ public class ReviewResponseDto {
     }
 
     @QueryProjection
-    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList, List<Tag> tags) {
+    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList, List<Tag> tags, Long likes) {
         id = review.getId();
         rate = review.getRate();
         keyword = review.getKeyword();

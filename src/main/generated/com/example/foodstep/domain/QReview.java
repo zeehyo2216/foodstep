@@ -24,6 +24,8 @@ public class QReview extends EntityPathBase<Review> {
 
     public final QBaseEntity _super = new QBaseEntity(this);
 
+    public final NumberPath<Integer> commentCount = createNumber("commentCount", Integer.class);
+
     public final StringPath contents = createString("contents");
 
     //inherited
@@ -38,6 +40,8 @@ public class QReview extends EntityPathBase<Review> {
     public final ListPath<ReviewImage, QReviewImage> imageList = this.<ReviewImage, QReviewImage>createList("imageList", ReviewImage.class, QReviewImage.class, PathInits.DIRECT2);
 
     public final StringPath keyword = createString("keyword");
+
+    public final NumberPath<Integer> likeCount = createNumber("likeCount", Integer.class);
 
     public final QPlace place;
 

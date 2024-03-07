@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,12 @@ public class Review extends BaseEntity{
     @OneToMany(mappedBy = "review")
     private List<ReviewTagMap> tagMapList;
 
+    @ColumnDefault("0")
+    private Integer likeCount;
+
+    @ColumnDefault("0")
+    private Integer commentCount;
+
     @Builder
     public Review(User user, Place place, Float rate, String keyword, String contents) {
         this.user = user;
@@ -57,6 +64,14 @@ public class Review extends BaseEntity{
         this.rate = rate;
         this.keyword = keyword;
         this.contents = contents;
+    }
+
+    public void updateLikeCount(Integer count) {
+        this.likeCount = count;
+    }
+
+    public void updateCommentCount(Integer count) {
+        this.commentCount = count;
     }
 }
 

@@ -6,6 +6,7 @@ import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewCategoryDTO;
 import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
+import com.example.foodstep.service.ReviewFeedService;
 import com.example.foodstep.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping(path="/review")
 public class ReviewController {
+    private final ReviewFeedService reviewFeedService;
     private final ReviewService reviewService;
 
     @GetMapping("/detail/{id}")
@@ -27,7 +29,7 @@ public class ReviewController {
 
     @PostMapping("/feed")
     public ResponseEntity<Slice<ReviewResponseDto>> searchFeedListReviews(@RequestBody @Valid ReviewCategoryDTO reviewCategoryDTO, @RequestUser User user) {
-        return new ResponseEntity<>(reviewService.searchFeedListReviews(reviewCategoryDTO, user), HttpStatus.OK);
+        return new ResponseEntity<>(reviewFeedService.searchFeedListReviews(reviewCategoryDTO, user), HttpStatus.OK);
     }
 
     @PostMapping("/view/{id}")
