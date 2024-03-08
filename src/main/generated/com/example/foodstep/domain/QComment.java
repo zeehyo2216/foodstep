@@ -39,6 +39,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final QComment parentComment;
 
+    public final NumberPath<Integer> replyCount = createNumber("replyCount", Integer.class);
+
     public final QReview review;
 
     public final QUser user;

@@ -1,8 +1,9 @@
 package com.example.foodstep.repository;
 
-import com.example.foodstep.domain.Comment;
-import com.example.foodstep.domain.QComment;
-import com.example.foodstep.domain.QUser;
+import com.example.foodstep.domain.*;
+import com.example.foodstep.dto.review.CommentResponseDto;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -20,17 +21,54 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     */
 
     @Override
-    public List<Comment> searchByReviewId(Integer reviewId) {
+    public List<CommentResponseDto> searchByReviewId(Integer reviewId, User loginUser) {
         QComment comment = QComment.comment;
         QUser user = QUser.user;
+        QCommentLikes commentLikes = QCommentLikes.commentLikes;
+
+        BooleanExpression hasLiked = commentLikes.comment.id.eq(comment.id)
+                .and(commentLikes.user.id.eq(loginUser.getId()));
 
         return queryFactory
-                .selectFrom(comment)
+                .select(Projections.constructor(
+                        CommentResponseDto.class,
+                        comment,
+                        user,
+                        commentLikes.id.isNotNull()
+                ))
+                .from(comment)
+                .leftJoin(commentLikes).on(hasLiked)
                 .leftJoin(comment.user, user).fetchJoin()
                 .distinct()
                 .where(
                         comment.review.id.eq(reviewId),
                         comment.parentComment.isNull()
+                )
+                .fetch();
+    }
+
+    @Override
+    public List<CommentResponseDto> searchReplyById(Integer parentId, User loginUser) {
+        QComment comment = QComment.comment;
+        QUser user = QUser.user;
+        QCommentLikes commentLikes = QCommentLikes.commentLikes;
+
+        BooleanExpression hasLiked = commentLikes.comment.id.eq(comment.id)
+                .and(commentLikes.user.id.eq(loginUser.getId()));
+
+        return queryFactory
+                .select(Projections.constructor(
+                        CommentResponseDto.class,
+                        comment,
+                        user,
+                        commentLikes.id.isNotNull()
+                ))
+                .from(comment)
+                .leftJoin(commentLikes).on(hasLiked)
+                .leftJoin(comment.user, user).fetchJoin()
+                .distinct()
+                .where(
+                        comment.parentComment.id.eq(parentId)
                 )
                 .fetch();
     }

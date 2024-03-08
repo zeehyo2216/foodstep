@@ -1,7 +1,9 @@
 package com.example.foodstep.service;
 
-import com.example.foodstep.domain.*;
-import com.example.foodstep.dto.review.CommentResponseDto;
+import com.example.foodstep.domain.Place;
+import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.ReviewViewed;
+import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.review.ReviewRequestDto;
 import com.example.foodstep.dto.review.ReviewResponseDto;
 import com.example.foodstep.model.CustomException;
@@ -13,9 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static com.example.foodstep.enums.ErrorCode.PLACE_NOT_FOUND;
 import static com.example.foodstep.enums.ErrorCode.REVIEW_NOT_FOUND;
@@ -38,14 +38,6 @@ public class ReviewService {
         ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
         return reviewResponseDto;
     }
-
-    @Transactional
-    public List<CommentResponseDto> getComment(int reviewId, User user) {
-        List<Comment> commentList = commentRepository.searchByReviewId(reviewId);
-        List<CommentResponseDto> responseList =  commentList.stream().map(CommentResponseDto::new).collect(Collectors.toList());
-        return responseList;
-    }
-
 
     @Transactional
     public void addReview(ReviewRequestDto reviewRequestDto, User user) {

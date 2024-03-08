@@ -25,4 +25,10 @@ public class Comment extends BaseEntity {
 
     @ColumnDefault("0")
     private Integer likeCount;
+
+    private Integer replyCount; //only exist if this is parent and parentComment is null
+
+    private Comment(Integer id) {
+        this.id = id;
+    }
 }
