@@ -44,6 +44,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                         comment.review.id.eq(reviewId),
                         comment.parentComment.isNull()
                 )
+                .orderBy(comment.likeCount.desc())
                 .fetch();
     }
 
@@ -70,6 +71,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .where(
                         comment.parentComment.id.eq(parentId)
                 )
+                .orderBy(comment.dateInit.asc())
                 .fetch();
     }
 
