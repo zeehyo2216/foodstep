@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: foodstep_user
-    url: jdbc:mysql://15.164.191.125:3306/foodstep?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://15.164.191.125:3306/foodstep?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
     password: password
   jpa:
     hibernate:
