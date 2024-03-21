@@ -4,6 +4,7 @@ import com.example.foodstep.domain.*;
 import com.example.foodstep.dto.TagDto;
 import com.example.foodstep.enums.PlaceCategory;
 import com.example.foodstep.util.AddressUtil;
+import com.example.foodstep.util.DateUtil;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,6 +28,8 @@ public class ReviewResponseDto {
     private OffsetDateTime dateInit;
 
     private OffsetDateTime dateMod;
+
+    private String passedTime;
 
     //User
     private String username;
@@ -90,6 +93,7 @@ public class ReviewResponseDto {
         contents = review.getContents();
         dateInit = review.getDateInit();
         dateMod = review.getDateMod();
+        passedTime = DateUtil.getFeedDate(review.getDateInit());
         username = user.getUsername();
         profileImgUrl = user.getProfileImgUrl();
         placeName = place.getName();
