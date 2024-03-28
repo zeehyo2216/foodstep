@@ -47,6 +47,7 @@ public class ReviewResponseDto {
     private final List<TagDto> tagList = new ArrayList<>();
 
     //Count
+    private Boolean isLiked;
     private Integer likeCount;
     private Integer commentCount;
 
@@ -86,13 +87,15 @@ public class ReviewResponseDto {
     }
 
     @QueryProjection
-    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList, List<Tag> tags, Long likes) {
+    public ReviewResponseDto(Review review, User user, Place place, List<ReviewImage> imageList, List<Tag> tags, Boolean liked) {
         id = review.getId();
         rate = review.getRate();
         keyword = review.getKeyword();
         contents = review.getContents();
         dateInit = review.getDateInit();
         dateMod = review.getDateMod();
+        likeCount = review.getLikeCount();
+        commentCount = review.getCommentCount();
         passedTime = DateUtil.getFeedDate(review.getDateInit());
         username = user.getUsername();
         profileImgUrl = user.getProfileImgUrl();
@@ -113,5 +116,6 @@ public class ReviewResponseDto {
                 }
             }
         });
+        isLiked = liked;
     }
 }

@@ -1,0 +1,12 @@
+package com.example.foodstep.repository;
+
+import com.example.foodstep.domain.Likes;
+import com.example.foodstep.domain.Review;
+import com.example.foodstep.domain.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface LikeRepository extends JpaRepository<Likes, Integer> {
+    Optional<Likes> findByReviewAndUser(Review review, User user);
+}

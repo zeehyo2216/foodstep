@@ -50,6 +50,16 @@ public class ReviewController {
         return new ResponseEntity<>("Editing Review : Success", HttpStatus.OK);
     }
 
+    @PostMapping("/like/{id}")
+    public ResponseEntity<String> likeReview(@PathVariable(name = "id") int id, @RequestUser User user) {
+        reviewService.likeReview(id, user);
+        return new ResponseEntity<>("Like Review : Success", HttpStatus.OK);
+    }
 
+    @PostMapping("/unlike/{id}")
+    public ResponseEntity<String> UnlikeReview(@PathVariable(name = "id") int id, @RequestUser User user) {
+        reviewService.unlikeReview(id, user);
+        return new ResponseEntity<>("Unlike Review : Success", HttpStatus.OK);
+    }
 
 }

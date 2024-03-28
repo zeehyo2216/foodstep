@@ -18,6 +18,7 @@ public enum ErrorCode {
     USER_EXISTS(BAD_REQUEST, "이미 가입한 사용자입니다"),
     WRONG_VERIFICATION_CODE(BAD_REQUEST, "인증 코드 잘못 입력하였습니다"),
     PLACE_EXISTS(BAD_REQUEST, "이미 등록된 음식점입니다"),
+    LIKE_EXISTS(BAD_REQUEST, "이미 좋아요한 발자국입니다"),
 
     // 401 UNAUTHORIZED : 인증되지 않은 사용자
     INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
@@ -30,7 +31,8 @@ public enum ErrorCode {
     VERIFICATION_CODE_EXPIRED(NOT_FOUND, "인증 코드가 만료되었습니다. 처음부터 다시 시도해주세요"),
     PLACE_NOT_FOUND(NOT_FOUND, "등록되지 않은 음식점입니다"),
     REVIEW_NOT_FOUND(NOT_FOUND, "등록되지 않은 발자국입니다"),
-    REVIEWVIEWED_NOT_FOUND(NOT_FOUND, "조회하지 않은 발자국입니다")
+    REVIEWVIEWED_NOT_FOUND(NOT_FOUND, "조회하지 않은 발자국입니다"),
+    LIKES_NOT_FOUND(NOT_FOUND, "좋아요 정보가 없습니다")
 
 
     // 504

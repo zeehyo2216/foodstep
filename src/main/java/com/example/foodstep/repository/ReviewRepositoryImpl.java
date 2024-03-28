@@ -56,6 +56,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
         QReviewImage reviewImage = QReviewImage.reviewImage;
         QReviewTagMap reviewTagMap = QReviewTagMap.reviewTagMap;
         QTag tag = QTag.tag;
+        QLikes likes = QLikes.likes;
 
         List<Integer> reviewIdList = queryFactory
                 .select(review.id)
@@ -97,13 +98,14 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .leftJoin(review.imageList, reviewImage)
                 .leftJoin(review.tagMapList, reviewTagMap)
                 .leftJoin(reviewTagMap.tag, tag)
+                .leftJoin(likes).on(review.eq(likes.review).and(likes.user.eq(viewUser)))
                 .where(
                         review.id.in(reviewIdList)
                 )
                 .orderBy(review.id.desc())
                 .transform(groupBy(review.id).list(
                         Projections.constructor(ReviewResponseDto.class,
-                                review, user, place, list(reviewImage), list(tag))
+                                review, user, place, list(reviewImage), list(tag), likes.user.isNull().not())
                 ));
 
         return new SliceImpl<>(contents, pageable, hasNextPage(contents, pageable.getPageSize()));

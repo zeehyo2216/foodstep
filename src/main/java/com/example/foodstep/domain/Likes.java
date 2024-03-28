@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,4 +17,10 @@ public class Likes extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Review review;
+
+    @Builder
+    public Likes(Review review, User user) {
+        this.review = review;
+        this.user = user;
+    }
 }
