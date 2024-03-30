@@ -91,6 +91,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .limit(pageable.getPageSize()+1)
                 .fetch();
 
+        // 조회수 급증한 피드에 대해서는 따로 reviewIdList 에 임의로 random 한순서로 2개정도씩 집어넣는건?? (여기에 로직 추가)
+
         List<ReviewResponseDto> contents = queryFactory
                 .selectFrom(review)
                 .leftJoin(review.user, user)
