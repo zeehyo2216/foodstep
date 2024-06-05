@@ -87,7 +87,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 )
                 .orderBy(review.id.desc())
                 // .orderBy(orderByFilterToSpecifiers(reviewCategoryDTO.getOrderByFilter(), reviewCategoryDTO.getCurrentLocation()))
-                .offset(pageable.getOffset())
+                // .offset(pageable.getOffset()) --> reviewViewed table 에 의해서 offset 설정이 필요없음.
                 .limit(pageable.getPageSize()+1)
                 .fetch();
 

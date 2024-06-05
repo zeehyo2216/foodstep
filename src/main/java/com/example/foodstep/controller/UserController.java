@@ -9,6 +9,8 @@ import com.example.foodstep.dto.user.RegisterRequestDto;
 import com.example.foodstep.dto.user.VerificationCodeRequestDto;
 import com.example.foodstep.enums.Authority;
 import com.example.foodstep.service.UserService;
+import com.example.foodstep.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,14 +50,16 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestBody JwtTokenDto jwtTokenDto, @RequestUser User user) {
-        userService.logout(jwtTokenDto, user);
+    public ResponseEntity<String> logout(HttpServletRequest request, @RequestUser User user) {
+        String accessToken = JwtUtil.resolveToken(request);
+        userService.logout(accessToken, user.getUsername());
         return new ResponseEntity<>("Logout Success.", HttpStatus.OK);
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<JwtTokenDto> reissue(@RequestBody JwtTokenDto jwtTokenDto) {
-        return new ResponseEntity<>(userService.reissue(jwtTokenDto), HttpStatus.OK);
+    public ResponseEntity<JwtTokenDto> reissue(HttpServletRequest request, @RequestBody JwtTokenDto jwtTokenDto) { //only refreshToken
+        String accessToken = JwtUtil.resolveToken(request);
+        return new ResponseEntity<>(userService.reissue(accessToken, jwtTokenDto), HttpStatus.OK);
     }
 
 }

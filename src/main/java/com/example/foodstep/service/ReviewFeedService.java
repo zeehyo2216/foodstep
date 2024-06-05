@@ -23,7 +23,14 @@ public class ReviewFeedService {
 
     @Transactional
     public Slice<ReviewResponseDto> searchFeedListReviews(ReviewCategoryDTO reviewCategoryDTO, User user) {
-        Pageable pageable = PageRequest.of(reviewCategoryDTO.getPageNumber(), PAGE_SIZE);
+        int pageNumber;
+        if (reviewCategoryDTO.getPageNumber() == null) {
+            pageNumber = 0;
+        } else {
+            pageNumber = reviewCategoryDTO.getPageNumber();
+        }
+
+        Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE);
         Slice<ReviewResponseDto> reviewResponseDtoList = reviewRepository.searchAllByMultipleCategories(reviewCategoryDTO, user, pageable);
 
         //Add to ReviewViewed(user-review mapped) table with light type.

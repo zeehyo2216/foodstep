@@ -41,7 +41,8 @@ public class WebSecurityConfig {
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/auth/**", "/test").permitAll()
+                                .requestMatchers("/auth/send-verify-email", "/auth/send-verify-email",
+                                        "/auth/register", "/auth/login", "/auth/reissue", "/test").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptionConfig) ->

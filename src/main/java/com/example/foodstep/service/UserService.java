@@ -1,9 +1,11 @@
 package com.example.foodstep.service;
 
 import com.example.foodstep.component.JwtTokenProvider;
-import com.example.foodstep.domain.User;
 import com.example.foodstep.dto.JwtTokenDto;
-import com.example.foodstep.dto.user.*;
+import com.example.foodstep.dto.user.EmailVerifyRequestDto;
+import com.example.foodstep.dto.user.LoginRequestDto;
+import com.example.foodstep.dto.user.RegisterRequestDto;
+import com.example.foodstep.dto.user.VerificationCodeRequestDto;
 import com.example.foodstep.enums.Authority;
 import com.example.foodstep.enums.LoginType;
 import com.example.foodstep.model.CustomException;
@@ -21,7 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.foodstep.enums.ErrorCode.*;
-import static com.example.foodstep.enums.LoginType.*;
+import static com.example.foodstep.enums.LoginType.EMAIL;
+import static com.example.foodstep.enums.LoginType.PHONE;
 
 @Service
 @RequiredArgsConstructor
@@ -137,28 +140,29 @@ public class UserService {
     }
 
     @Transactional
-    public void logout(JwtTokenDto jwtTokenDto, User user) {
+    public void logout(String accessToken, String username) {
+
         // Access Token Blacklist
-        if (!jwtTokenProvider.validateToken(jwtTokenDto.getAccessToken())) {
+        if (!jwtTokenProvider.validateToken(accessToken)) {
             throw new CustomException(ACCESS_TOKEN_EXPIRED);
         }
 
-        if (jwtTokenProvider.getExpiration(jwtTokenDto.getAccessToken()) != 0) {
+        if (jwtTokenProvider.getExpiration(accessToken) != 0) {
             redisTemplate.opsForValue().set(
-                    jwtTokenDto.getAccessToken(),
+                    accessToken,
                     LOGOUT_VALUE,
-                    jwtTokenProvider.getExpiration(jwtTokenDto.getAccessToken()),
+                    jwtTokenProvider.getExpiration(accessToken),
                     TimeUnit.MILLISECONDS
             );
         }
 
         // Refresh Token 삭제
-        redisTemplate.delete(REFRESH_TOKEN_PREFIX + user.getEmail());
+        redisTemplate.delete(REFRESH_TOKEN_PREFIX + username);
 
     }
 
     @Transactional
-    public JwtTokenDto reissue(JwtTokenDto jwtTokenDto) {
+    public JwtTokenDto reissue(String accessToken, JwtTokenDto jwtTokenDto) {
 
         // 1. Refresh Token 검증
         if (!jwtTokenProvider.validateToken(jwtTokenDto.getRefreshToken())) {
@@ -166,7 +170,7 @@ public class UserService {
         }
 
         // 2. Access Token 에서 Member ID 가져오기
-        Authentication authentication = jwtTokenProvider.getAuthentication(jwtTokenDto.getAccessToken());
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 
         // 3. 저장소에서 Member ID 를 기반으로 Refresh Token 값 가져옴
         String refreshToken = redisTemplate.opsForValue().get(authentication.getName());

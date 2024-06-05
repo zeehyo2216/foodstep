@@ -32,7 +32,7 @@ public class JwtTokenProvider {
     private final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "Bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30 * 100;            // 30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60;            // 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;  // 7일
 
     @Autowired
@@ -110,6 +110,7 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
 
             logger.info("만료된 JWT 토큰입니다.");
+            // throw new CustomException(ACCESS_TOKEN_EXPIRED);
         } catch (UnsupportedJwtException e) {
 
             logger.info("지원되지 않는 JWT 토큰입니다.");
